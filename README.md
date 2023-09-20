@@ -1,3 +1,12 @@
+## 기술 목록
+
+- Language: **Java 17**
+- Frameworks: **Spring Boot 3, Hibernate**
+- Build Tool: **Gradle 8**
+- DB: **MySQL, Redis**
+- Test Tools: **Rest assured, jUnit 5, AssertJ, TestContainers(MySQL)**
+- VCS: **Git, Github**
+
 ## 실행 환경 구성
 ```shell
 # The Multiple Runtime Version Manager: ASDF
@@ -12,15 +21,11 @@ $ asdf install
 ./gradlew bootRun
 ```
 
+## 코드 스타일 컨벤션
+- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
+- `intellij-java-google-style.xml` Import
 
-## 기술 목록
-
-- Language: **Java 17**
-- Frameworks: **Spring Boot 3, Hibernate**
-- Build Tool: **Gradle 8**
-- DB: **MySQL, Redis**
-- Test Tools: **Rest assured, jUnit 5, AssertJ, TestContainers(MySQL)**
-- VCS: **Git, Github**
+--- 
 
 ## 기능 상세 정의
 
