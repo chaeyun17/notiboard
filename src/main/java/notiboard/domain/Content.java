@@ -1,6 +1,7 @@
 package notiboard.domain;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Lob;
 import lombok.AccessLevel;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class Content {
 
   @Lob
+  @Column(columnDefinition = "LONGTEXT")
   private String content;
 
   private Content(String content) {

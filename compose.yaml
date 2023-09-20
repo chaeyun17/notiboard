@@ -1,10 +1,12 @@
 services:
   mysql:
     image: 'mysql:latest'
+    volumes:
+      - ./mysql:/var/lib/mysql
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      - 'MYSQL_DATABASE=notiboard'
+      - 'MYSQL_PASSWORD=admin123'
+      - 'MYSQL_ROOT_PASSWORD=root'
+      - 'MYSQL_USER=notiboard'
     ports:
-      - '3306'
+      - 33306:3306

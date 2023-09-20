@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:33306/notiboard
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
