@@ -3,14 +3,20 @@ package notiboard.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import notiboard.dto.NoticeDto.Request;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
@@ -26,6 +32,7 @@ public class Notice extends AuditEntity {
   @Id
   @EqualsAndHashCode.Include
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Getter
   private Long id;
   @Column(length = Title.MAX_LENGTH, nullable = false)
   @Embedded
@@ -38,6 +45,23 @@ public class Notice extends AuditEntity {
   private PostingPeriod postingPeriod;
   @Column(nullable = false)
   private boolean deleted = false;
+  @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
+  private List<Attachment> attachments = new ArrayList<>();
+
+  private Notice(Title title, Content content, PostingPeriod postingPeriod) {
+    this.title = title;
+    this.content = content;
+    this.postingPeriod = postingPeriod;
+  }
+
+  public static Notice of(Request request) {
+    return new Notice(Title.of(request.getTitle()), Content.of(request.getContent()),
+        PostingPeriod.of(request.getOpeningTime(), request.getOpeningTime()));
+  }
+
+  public void addAttachments(List<Attachment> attachments) {
+    this.attachments.addAll(attachments);
+  }
 
   @Override
   public final boolean equals(Object o) {

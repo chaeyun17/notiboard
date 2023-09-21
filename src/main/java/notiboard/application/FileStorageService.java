@@ -1,10 +1,10 @@
 package notiboard.application;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import notiboard.domain.UploadFile;
+import notiboard.dto.UploadFileDto;
 
-@Service
-@Transactional(readOnly = true)
-public class FileStorageService {
+public interface FileStorageService {
+
+  UploadFile saveFile(UploadFileDto dto);
 
 }

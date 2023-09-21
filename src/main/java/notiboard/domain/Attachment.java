@@ -13,7 +13,6 @@ import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.hibernate.proxy.HibernateProxy;
 
 @Entity
 @Table(name = "attachment")
@@ -30,32 +29,33 @@ public class Attachment extends AuditEntity {
   private Notice notice;
 
   @Embedded
-  private FileStorage fileStorage;
+  private UploadFile uploadFile;
+
+  private Attachment(Notice notice, UploadFile uploadFile) {
+    this.notice = notice;
+    this.uploadFile = uploadFile;
+  }
+
+  public static Attachment of(Notice notice, UploadFile uploadFile) {
+    return new Attachment(notice, uploadFile);
+  }
 
   @Override
-  public final boolean equals(Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
-    if (o == null) {
-      return false;
-    }
-    Class<?> oEffectiveClass = o instanceof HibernateProxy
-        ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
-        : o.getClass();
-    Class<?> thisEffectiveClass = this instanceof HibernateProxy
-        ? ((HibernateProxy) this).getHibernateLazyInitializer()
-        .getPersistentClass() : this.getClass();
-    if (thisEffectiveClass != oEffectiveClass) {
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
     Attachment that = (Attachment) o;
-    return id != null && Objects.equals(id, that.id);
+    return Objects.equals(id, that.id);
   }
 
   @Override
-  public final int hashCode() {
-    return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
-        .getPersistentClass().hashCode() : getClass().hashCode();
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
   }
+
+
 }

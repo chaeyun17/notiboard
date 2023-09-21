@@ -2,10 +2,12 @@ package notiboard.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * DTO for {@link notiboard.domain.Notice}
@@ -13,10 +15,26 @@ import lombok.ToString;
 
 public class NoticeDto implements Serializable {
 
+  @AllArgsConstructor
+  @Data
+  @NoArgsConstructor
+  public static class Request {
+
+    private String title;
+    private String content;
+    private LocalDateTime openingTime;
+    private LocalDateTime closingTime;
+    private List<MultipartFile> attachments = new ArrayList<>();
+
+    public void addAttachments(List<MultipartFile> files) {
+      this.attachments.addAll(files);
+    }
+
+  }
+
 
   @AllArgsConstructor
-  @Getter
-  @ToString
+  @Data
   @NoArgsConstructor
   public static class Response {
 
