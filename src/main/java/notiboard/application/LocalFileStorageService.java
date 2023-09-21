@@ -22,6 +22,7 @@ public class LocalFileStorageService implements FileStorageService {
   public static final Path FILE_STORAGE_PATH = Paths.get("files").toAbsolutePath();
   private static final int MAX_LENGTH_FILE_BASE_NAME = 50;
 
+  @Transactional
   @Override
   public UploadFile saveFile(UploadFileDto dto) {
     String saveFileName = generateFileName(dto.getOriginalFileName());
@@ -31,9 +32,18 @@ public class LocalFileStorageService implements FileStorageService {
       Files.createFile(filePath);
       Files.write(filePath, dto.getInputStream().readAllBytes());
     } catch (IOException e) {
+      deleteFile(filePath);
       throw new RuntimeException(e);
     }
     return UploadFile.of(filePath, saveFileName, dto.getFileSize(), StorageType.LOCAL);
+  }
+
+  private void deleteFile(Path filePath) {
+    try {
+      Files.delete(filePath);
+    } catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
   }
 
   private String generateFileName(String fileName) {

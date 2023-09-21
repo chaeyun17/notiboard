@@ -8,6 +8,7 @@
 - VCS: **Git, Github**
 
 ## 실행 환경 구성
+
 ```shell
 # The Multiple Runtime Version Manager: ASDF
 $ brew install asdf
@@ -22,6 +23,7 @@ $ asdf install
 ```
 
 ## 코드 스타일 컨벤션
+
 - [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
 - `intellij-java-google-style.xml` Import
 
@@ -35,8 +37,7 @@ $ asdf install
     - 유효성 체크
         - 필수 입력값: 제목, 내용, 공지시작일시, 공지종료일시
         - 옵션 입력값: 첨부파일
-        - 제목은 50자 이하
-        - 내용은 1000자 이하
+        - 제목은 100자 이하
         - 공지 시작일시와 종료일시는 시간 포맷 ISO UTC
         - 공지 시작일시는 종료일시보다 늦으면 안된다.
         - 공지 종료일시는 시작일시보다 빠르면 안된다.
@@ -94,12 +95,9 @@ $ asdf install
         - 필수 입력값: 제목, 내용, 공지시작일시, 공지종료일시
         - 옵션 입력값: 첨부파일
         - 제목은 100자 이하
-        - 내용은 1000자 이하
         - 공지 시작일시와 종료일시는 시간 포맷 ISO 8601
         - 공지 시작일시는 종료일시보다 늦으면 안된다.
-        - 공지 종료일시는 시작일시보다 빠르면 안된다.
         - 첨부파일은 2MB 이하여야 한다.
-        - 첨부파일 중에 0 bytes 는 제외하고 등록한다.
 - Title 제목
     - 제목 생성
         - 처음과 끝에 공란은 없앤다.

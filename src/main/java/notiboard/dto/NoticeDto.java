@@ -1,5 +1,7 @@
 package notiboard.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,10 +22,16 @@ public class NoticeDto implements Serializable {
   @NoArgsConstructor
   public static class Request {
 
+    @NotNull(message = "제목은 필수 입력입니다.")
+    @Size(min = 1, max = 100, message = "제목은 100자 이하여야 합니다.")
     private String title;
+    @NotNull(message = "내용은 필수 입력입니다.")
     private String content;
+    @NotNull(message = "시작일시는 필수 입력입니다.")
     private LocalDateTime openingTime;
+    @NotNull(message = "종료일시는 필수 입력입니다.")
     private LocalDateTime closingTime;
+
     private List<MultipartFile> attachments = new ArrayList<>();
 
     public void addAttachments(List<MultipartFile> files) {

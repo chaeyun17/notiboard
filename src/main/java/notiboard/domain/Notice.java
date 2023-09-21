@@ -56,7 +56,7 @@ public class Notice extends AuditEntity {
 
   public static Notice of(Request request) {
     return new Notice(Title.of(request.getTitle()), Content.of(request.getContent()),
-        PostingPeriod.of(request.getOpeningTime(), request.getOpeningTime()));
+        PostingPeriod.of(request.getOpeningTime(), request.getClosingTime()));
   }
 
   public void addAttachments(List<Attachment> attachments) {

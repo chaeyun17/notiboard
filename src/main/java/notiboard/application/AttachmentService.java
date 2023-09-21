@@ -1,5 +1,8 @@
 package notiboard.application;
 
+import static notiboard.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_LARGE;
+import static notiboard.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_SMALL;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +11,7 @@ import notiboard.domain.Attachment;
 import notiboard.domain.Notice;
 import notiboard.domain.UploadFile;
 import notiboard.dto.UploadFileDto;
+import notiboard.error.CustomException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AttachmentService {
 
+  private static final int MAX_FILE_SIZE = 2 * 1024 * 1024;
   private final AttachmentRepository attachmentRepository;
   private final FileStorageService fileStorageService;
 
   @Transactional
   public List<Attachment> saveFiles(List<UploadFileDto> files, Notice notice) {
+    files.forEach(this::validateFile);
     return files.stream().map(file -> this.save(file, notice)).collect(
         Collectors.toList());
   }
@@ -30,6 +36,15 @@ public class AttachmentService {
     UploadFile uploadFile = fileStorageService.saveFile(fileDto);
     Attachment attachment = Attachment.of(notice, uploadFile);
     return attachmentRepository.save(attachment);
+  }
+
+  private void validateFile(UploadFileDto dto) {
+    if (dto.getFileSize() > MAX_FILE_SIZE) {
+      throw new CustomException(INVALID_INPUT_UPLOAD_FILE_TOO_LARGE);
+    }
+    if (dto.getFileSize() == 0) {
+      throw new CustomException(INVALID_INPUT_UPLOAD_FILE_TOO_SMALL);
+    }
   }
 
 
