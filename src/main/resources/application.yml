@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33306/notiboard
@@ -20,3 +23,7 @@ spring:
         show_sql: true # 임시로 켜둠
         format_sql: true
         use_sql_comments: true
+
+app:
+  jwtSecret: Q0FEVVI2MlJwTndtZ3FMRllhWUVmTUFCbmlyTjduSHU0S3pnazlGMzdCeVZLOGhwbldEUVpjZjNialZxUTV6TXdGbUFrN1M5aUEzZFlxU0JiclZnTUhremJnenVOSkN1M1R5NQ==
+  jwtExpirationMs: 3600000
