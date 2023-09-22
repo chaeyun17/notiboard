@@ -4,9 +4,6 @@ spring:
     url: jdbc:mysql://localhost:33306/notiboard
     username: root
     password: root
-  jpa:
-    hibernate:
-      ddl-auto: validate
   flyway:
     enabled: true
   servlet:
@@ -14,3 +11,12 @@ spring:
       file-size-threshold: 2MB
       max-file-size: 2MB
       max-request-size: 100MB
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate.ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true # 임시로 켜둠
+        format_sql: true
+        use_sql_comments: true

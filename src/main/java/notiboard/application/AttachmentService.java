@@ -2,6 +2,7 @@ package notiboard.application;
 
 import static notiboard.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_LARGE;
 import static notiboard.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_SMALL;
+import static notiboard.error.ErrorCode.NOT_FOUND_ATTACHMENT;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -64,4 +65,18 @@ public class AttachmentService {
     }
     return new AttachmentDto.Response(attachment);
   }
+
+  @Transactional
+  public void deleteAttachments(List<Long> deleteAttachmentIds) {
+    deleteAttachmentIds.forEach(this::deleteById);
+  }
+
+  @Transactional
+  public void deleteById(Long id) {
+    Attachment attachment = attachmentRepository.findById(id)
+        .orElseThrow(() -> new CustomException(NOT_FOUND_ATTACHMENT));
+    attachment.delete();
+    attachmentRepository.delete(attachment);
+  }
+  
 }

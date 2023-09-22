@@ -1,17 +1,17 @@
-POST http://localhost:8080/api/v1/notice
+POST http://localhost:8080/api/v1/notices
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
 Content-Disposition: form-data; name="attachments"; filename="one.txt"
 Content-Type: appication/octet-stream
 
-< attachments/one.txt
+< upload_files/one.txt
 
 --boundary
 Content-Disposition: form-data; name="attachments"; filename="two.txt"
 Content-Type: appication/octet-stream
 
-< attachments/two.txt
+< upload_files/two.txt
 
 --boundary
 Content-Disposition: form-data; name="notice"

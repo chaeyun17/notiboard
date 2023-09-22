@@ -91,4 +91,17 @@ public class Notice extends AuditEntity {
         .getPersistentClass().hashCode() : getClass().hashCode();
   }
 
+  public void modify(Request request) {
+    this.title = Title.of(request.getTitle());
+    this.content = Content.of(request.getContent());
+    this.postingPeriod = PostingPeriod.of(request.getOpeningTime(), request.getClosingTime());
+  }
+
+  public void addAttachment(Attachment attachment) {
+    this.attachments.add(attachment);
+  }
+
+  public void removeAttachment(Attachment attachment) {
+    this.attachments.remove(attachment);
+  }
 }

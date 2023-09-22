@@ -1,16 +1,11 @@
 package notiboard.ui;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import notiboard.application.AttachmentService;
 import notiboard.application.NoticeService;
-import notiboard.dto.AttachmentDto;
 import notiboard.dto.NoticeDto;
 import notiboard.dto.SearchType;
 import org.springframework.data.domain.Page;
@@ -23,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -35,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class NoticeController {
 
   private final NoticeService noticeService;
-  private final AttachmentService attachmentService;
 
   @GetMapping("/search")
   public ResponseEntity<Page<NoticeDto.Response>> search(
@@ -66,24 +61,20 @@ public class NoticeController {
     return ResponseEntity.ok(response);
   }
 
+  @PutMapping("/{id}")
+  public ResponseEntity<NoticeDto.Response> modify(@PathVariable Long id,
+      @RequestPart(value = "notice") @Valid NoticeDto.Request request,
+      @RequestPart List<MultipartFile> attachments) {
+    request.addAttachments(attachments);
+    NoticeDto.Response response = noticeService.modify(id, request);
+    return ResponseEntity.ok(response);
+  }
+
   @DeleteMapping("/{id}")
   public ResponseEntity<NoticeDto.Response> deleteById(@PathVariable Long id) {
     noticeService.deleteById(id);
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/attachments/{id}/download")
-  public void downloadAttachment(@PathVariable("id") Long attachmentId,
-      HttpServletResponse response) {
-    OutputStream outputStream = null;
-    try {
-      outputStream = response.getOutputStream();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    AttachmentDto.Response dto = attachmentService.download(attachmentId, outputStream);
-    response.setContentType("application/octet-stream");
-    response.setHeader("Content-Disposition", "attachment;filename=" + dto.getFileName());
-  }
 
 }

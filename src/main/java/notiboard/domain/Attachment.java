@@ -14,7 +14,7 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import notiboard.util.NoticeUrlBuilder;
+import notiboard.util.AttachmentUrlBuilder;
 
 @Getter
 @Entity
@@ -40,7 +40,9 @@ public class Attachment extends AuditEntity {
   }
 
   public static Attachment of(Notice notice, UploadFile uploadFile) {
-    return new Attachment(notice, uploadFile);
+    Attachment attachment = new Attachment(notice, uploadFile);
+    notice.addAttachment(attachment);
+    return attachment;
   }
 
   @Override
@@ -62,7 +64,10 @@ public class Attachment extends AuditEntity {
 
 
   public String getDownloadUrl() {
-    return NoticeUrlBuilder.getDownloadUrl(this.id);
+    return AttachmentUrlBuilder.getDownloadUrl(this.id);
   }
 
+  public void delete() {
+    this.notice.removeAttachment(this);
+  }
 }

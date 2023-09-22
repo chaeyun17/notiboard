@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import notiboard.domain.Notice;
 import notiboard.dto.NoticeDto;
 import notiboard.dto.NoticeDto.Response;
@@ -58,4 +59,16 @@ public class NoticeRepoCustomImpl extends QuerydslRepositorySupport implements N
         .fetch();
     return new PageImpl<>(notices, pageable, query.fetch().size());
   }
+
+  @Override
+  public Optional<Notice> findByIdFetch(Long id) {
+    JPAQuery<Notice> query = new JPAQuery<>(getEntityManager());
+    Notice result = query.from(notice)
+        .innerJoin(notice.attachments)
+        .fetchJoin()
+        .where(notice.id.eq(id)).fetchOne();
+    return Optional.ofNullable(result);
+  }
+
+
 }
