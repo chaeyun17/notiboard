@@ -75,8 +75,14 @@ public class AttachmentService {
   public void deleteById(Long id) {
     Attachment attachment = attachmentRepository.findById(id)
         .orElseThrow(() -> new CustomException(NOT_FOUND_ATTACHMENT));
+    fileStorageService.delete(attachment.getUploadFile());
     attachment.delete();
     attachmentRepository.delete(attachment);
   }
-  
+
+  @Transactional
+  public void deleteByNotice(Notice notice) {
+    List<Attachment> attachments = attachmentRepository.findAllByNotice(notice);
+    attachments.stream().map(Attachment::getId).forEach(this::deleteById);
+  }
 }

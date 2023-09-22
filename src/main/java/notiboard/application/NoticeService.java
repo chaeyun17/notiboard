@@ -44,16 +44,17 @@ public class NoticeService {
     return attachmentService.saveFiles(uploadFileDtoList, notice);
   }
 
+  @Transactional
   public NoticeDto.Response findById(Long id) {
     Notice notice = findByIdFetchOrElseThrow(id);
+    notice.increaseViewCnt();
     return new NoticeDto.Response(notice);
   }
 
   @Transactional
   public void deleteById(Long id) {
-    if (!noticeRepository.existsById(id)) {
-      throw new CustomException(NOT_FOUND_NOTICE);
-    }
+    Notice notice = findByIdFetchOrElseThrow(id);
+    attachmentService.deleteByNotice(notice);
     noticeRepository.deleteById(id);
   }
 

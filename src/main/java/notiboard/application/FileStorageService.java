@@ -7,4 +7,5 @@ public interface FileStorageService {
 
   UploadFile saveFile(UploadFileDto dto);
 
+  void delete(UploadFile uploadFile);
 }

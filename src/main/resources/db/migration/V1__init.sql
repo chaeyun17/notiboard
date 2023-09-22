@@ -20,6 +20,7 @@ CREATE TABLE attachment
     storage_type VARCHAR(255)          NULL,
     created_at   datetime              NULL,
     modified_at  datetime              NULL,
+    deleted      BIT(1)                NOT NULL,
     CONSTRAINT pk_attachment PRIMARY KEY (id)
 );
 

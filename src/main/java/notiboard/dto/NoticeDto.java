@@ -59,6 +59,7 @@ public class NoticeDto implements Serializable {
     private LocalDateTime modifiedAt;
     @JsonInclude(Include.NON_NULL)
     private List<AttachmentDto.Response> attachments = new ArrayList<>();
+    private Long viewCount;
 
     public Response(Notice notice) {
       this.id = notice.getId();
@@ -70,6 +71,7 @@ public class NoticeDto implements Serializable {
       this.modifiedAt = notice.getModifiedAt();
       this.attachments.addAll(notice.getAttachments().stream()
           .map(AttachmentDto.Response::new).toList());
+      this.viewCount = notice.getPostStats().getViewCount();
     }
 
   }

@@ -38,6 +38,16 @@ public class LocalFileStorageService implements FileStorageService {
     return UploadFile.of(filePath, saveFileName, dto.getFileSize(), StorageType.LOCAL);
   }
 
+  @Override
+  public void delete(UploadFile uploadFile) {
+    Path file = Path.of(uploadFile.getFilePath());
+    try {
+      Files.deleteIfExists(file);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   private void deleteFile(Path filePath) {
     try {
       Files.delete(filePath);

@@ -1,3 +1,3 @@
-GET http://localhost:8080/api/v1/notices/search?searchType=CONTENT&keyword=임&page=0&size=10&
-    sort=createdAt,desc&from=2023-09-22T00:05:29&to=2023-09-22T00:16:11
+GET http://localhost:8080/api/v1/notices/search?searchType=CONTENT&keyword=&page=0&size=10&
+    sort=createdAt,desc&from=2023-09-22T00:05:29&to=2023-09-30T00:16:11
 Content-Type: application/json

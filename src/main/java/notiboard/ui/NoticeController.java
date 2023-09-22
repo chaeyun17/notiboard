@@ -34,8 +34,8 @@ public class NoticeController {
 
   @GetMapping("/search")
   public ResponseEntity<Page<NoticeDto.Response>> search(
-      @RequestParam(required = false) SearchType searchType,
-      @RequestParam(required = false) String keyword,
+      @RequestParam(required = false, defaultValue = "TITLE") SearchType searchType,
+      @RequestParam(required = false, defaultValue = "") String keyword,
       @RequestParam(required = false) LocalDateTime from,
       @RequestParam(required = false) LocalDateTime to,
       @PageableDefault(size = 100, sort = "createdAt", direction = Direction.DESC)

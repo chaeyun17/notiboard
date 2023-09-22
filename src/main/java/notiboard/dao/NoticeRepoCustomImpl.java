@@ -39,7 +39,8 @@ public class NoticeRepoCustomImpl extends QuerydslRepositorySupport implements N
         notice.postingPeriod.openingTime,
         notice.postingPeriod.closingTime,
         notice.createdAt,
-        notice.modifiedAt);
+        notice.modifiedAt,
+        notice.postStats.viewCount);
     query = query.select(projection).from(notice);
 
     Predicate predicate = notice.deleted.isFalse();
@@ -65,6 +66,8 @@ public class NoticeRepoCustomImpl extends QuerydslRepositorySupport implements N
     JPAQuery<Notice> query = new JPAQuery<>(getEntityManager());
     Notice result = query.from(notice)
         .innerJoin(notice.attachments)
+        .fetchJoin()
+        .innerJoin(notice.postStats)
         .fetchJoin()
         .where(notice.id.eq(id)).fetchOne();
     return Optional.ofNullable(result);

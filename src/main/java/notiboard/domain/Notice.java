@@ -1,13 +1,17 @@
 package notiboard.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,31 +37,41 @@ public class Notice extends AuditEntity {
   @Id
   @EqualsAndHashCode.Include
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Getter
   private Long id;
+
   @Column(length = Title.MAX_LENGTH, nullable = false)
   @Embedded
   private Title title;
+
   @Column(nullable = false)
   @Embedded
   private Content content;
+
   @Column(nullable = false)
   @Embedded
   private PostingPeriod postingPeriod;
+
   @Column(nullable = false)
   private boolean deleted = false;
+
   @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
   private List<Attachment> attachments = new ArrayList<>();
 
-  private Notice(Title title, Content content, PostingPeriod postingPeriod) {
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+  @JoinColumn(name = "post_stats_id",
+      foreignKey = @ForeignKey(name = "fk_notice_to_post_stats"))
+  private PostStats postStats;
+
+  private Notice(Title title, Content content, PostingPeriod postingPeriod, PostStats postStats) {
     this.title = title;
     this.content = content;
     this.postingPeriod = postingPeriod;
+    this.postStats = postStats;
   }
 
   public static Notice of(Request request) {
     return new Notice(Title.of(request.getTitle()), Content.of(request.getContent()),
-        PostingPeriod.of(request.getOpeningTime(), request.getClosingTime()));
+        PostingPeriod.of(request.getOpeningTime(), request.getClosingTime()), PostStats.of());
   }
 
   public void addAttachments(List<Attachment> attachments) {
@@ -104,4 +118,9 @@ public class Notice extends AuditEntity {
   public void removeAttachment(Attachment attachment) {
     this.attachments.remove(attachment);
   }
+
+  public void increaseViewCnt() {
+    this.postStats.increaseViewCnt();
+  }
+
 }

@@ -15,11 +15,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import notiboard.util.AttachmentUrlBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Entity
 @Table(name = "attachment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE attachment SET deleted = 1 WHERE id=?")
+@Where(clause = "deleted=0")
 public class Attachment extends AuditEntity {
 
   @Id
@@ -33,6 +37,8 @@ public class Attachment extends AuditEntity {
 
   @Embedded
   private UploadFile uploadFile;
+
+  private boolean deleted = false;
 
   private Attachment(Notice notice, UploadFile uploadFile) {
     this.notice = notice;
