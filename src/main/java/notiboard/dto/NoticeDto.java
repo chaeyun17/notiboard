@@ -1,5 +1,7 @@
 package notiboard.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
@@ -49,6 +51,7 @@ public class NoticeDto implements Serializable {
 
     private Long id;
     private String title;
+    @JsonInclude(Include.NON_NULL)
     private String content;
     private LocalDateTime openingTime;
     private LocalDateTime closingTime;
