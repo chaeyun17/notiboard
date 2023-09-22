@@ -12,8 +12,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import notiboard.util.NoticeUrlBuilder;
 
+@Getter
 @Entity
 @Table(name = "attachment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -57,5 +60,9 @@ public class Attachment extends AuditEntity {
     return id != null ? id.hashCode() : 0;
   }
 
+
+  public String getDownloadUrl() {
+    return NoticeUrlBuilder.getDownloadUrl(this.id);
+  }
 
 }

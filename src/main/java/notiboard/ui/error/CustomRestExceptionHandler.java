@@ -1,4 +1,4 @@
-package org.dnd3.udongsa.neighborcats.exception;
+package notiboard.ui.error;
 
 import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
@@ -6,16 +6,15 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import notiboard.error.CustomException;
-import notiboard.error.CustomExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice
+@ControllerAdvice
 public class CustomRestExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

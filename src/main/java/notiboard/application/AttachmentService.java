@@ -3,6 +3,10 @@ package notiboard.application;
 import static notiboard.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_LARGE;
 import static notiboard.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_SMALL;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +14,8 @@ import notiboard.dao.AttachmentRepository;
 import notiboard.domain.Attachment;
 import notiboard.domain.Notice;
 import notiboard.domain.UploadFile;
+import notiboard.dto.AttachmentDto;
+import notiboard.dto.AttachmentDto.Response;
 import notiboard.dto.UploadFileDto;
 import notiboard.error.CustomException;
 import org.springframework.stereotype.Service;
@@ -48,4 +54,14 @@ public class AttachmentService {
   }
 
 
+  public Response download(Long attachmentId, OutputStream outputStream) {
+    Attachment attachment = attachmentRepository.findById(attachmentId).orElseThrow();
+    Path path = Path.of(attachment.getUploadFile().getFilePath());
+    try {
+      outputStream.write(Files.readAllBytes(path));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return new AttachmentDto.Response(attachment);
+  }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import notiboard.domain.Notice;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -53,5 +54,19 @@ public class NoticeDto implements Serializable {
     private LocalDateTime closingTime;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private List<AttachmentDto.Response> attachments = new ArrayList<>();
+
+    public Response(Notice notice) {
+      this.id = notice.getId();
+      this.title = notice.getTitle().toText();
+      this.content = notice.getContent().toText();
+      this.openingTime = notice.getPostingPeriod().getOpeningTime();
+      this.closingTime = notice.getPostingPeriod().getClosingTime();
+      this.createdAt = notice.getCreatedAt();
+      this.modifiedAt = notice.getModifiedAt();
+      this.attachments.addAll(notice.getAttachments().stream()
+          .map(AttachmentDto.Response::new).toList());
+    }
+
   }
 }

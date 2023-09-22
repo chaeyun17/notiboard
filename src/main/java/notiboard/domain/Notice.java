@@ -22,10 +22,11 @@ import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
+@Getter
 @Table(name = "notice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE notice SET deleted = 1 WHERE id=?")
-@Where(clause = "deleted=1")
+@Where(clause = "deleted=0")
 public class Notice extends AuditEntity {
 
 
