@@ -82,10 +82,6 @@ public class Notice extends AuditEntity {
         PostingPeriod.of(request.getOpeningTime(), request.getClosingTime()), PostStats.of());
   }
 
-  public void addAttachments(List<Attachment> attachments) {
-    this.attachments.addAll(attachments);
-  }
-
   @Override
   public final boolean equals(Object o) {
     if (this == o) {
