@@ -1,4 +1,4 @@
-package notiboard.common.error;
+package notiboard.exception;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 public class CustomException extends RuntimeException {
-
-  private static final long serialVersionUID = 1L;
 
   private HttpStatus httpStatus;
   private String message;

@@ -1,4 +1,4 @@
-package notiboard.common.error.domain;
+package notiboard.common.domain;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +28,5 @@ public class MemberAuditorAware implements AuditorAware<Member> {
     Member member = (Member) authentication.getPrincipal();
     return memberSearchService.findById(member.getId());
   }
-  
+
 }

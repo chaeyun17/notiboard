@@ -7,6 +7,7 @@ import notiboard.member.application.MemberService;
 import notiboard.member.dto.MemberDto;
 import notiboard.member.dto.TokenDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,14 @@ public class AuthController {
   private final MemberService memberService;
   private final AuthService authService;
 
+  @PreAuthorize("@policyChecker.permitAnonymous()")
   @PostMapping("/signup")
   public ResponseEntity<Void> signUp(@RequestBody @Valid MemberDto.Request request) {
     memberService.signUp(request);
     return ResponseEntity.ok().build();
   }
 
+  @PreAuthorize("@policyChecker.permitAnonymous()")
   @PostMapping("/token")
   public ResponseEntity<TokenDto.Response> getToken(@RequestBody @Valid TokenDto.Request request) {
     TokenDto.Response response = authService.getToken(request);

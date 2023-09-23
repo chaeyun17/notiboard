@@ -1,8 +1,8 @@
 package notiboard.notice.application;
 
-import static notiboard.common.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_LARGE;
-import static notiboard.common.error.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_SMALL;
-import static notiboard.common.error.ErrorCode.NOT_FOUND_ATTACHMENT;
+import static notiboard.exception.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_LARGE;
+import static notiboard.exception.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_SMALL;
+import static notiboard.exception.ErrorCode.NOT_FOUND_ATTACHMENT;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,13 +11,13 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import notiboard.exception.CustomException;
 import notiboard.notice.dao.AttachmentRepository;
 import notiboard.notice.domain.Attachment;
 import notiboard.notice.domain.Notice;
 import notiboard.notice.domain.UploadFile;
 import notiboard.notice.dto.AttachmentDto.Response;
 import notiboard.notice.dto.UploadFileDto;
-import notiboard.common.error.CustomException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

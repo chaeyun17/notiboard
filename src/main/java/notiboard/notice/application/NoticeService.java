@@ -1,11 +1,14 @@
 package notiboard.notice.application;
 
-import static notiboard.common.error.ErrorCode.NOT_FOUND_NOTICE;
+import static notiboard.exception.ErrorCode.NOT_FOUND_NOTICE;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import notiboard.common.applicaiton.PolicyChecker;
+import notiboard.exception.CustomException;
+import notiboard.exception.ErrorCode;
 import notiboard.notice.dao.NoticeRepository;
 import notiboard.notice.domain.Attachment;
 import notiboard.notice.domain.Notice;
@@ -13,7 +16,6 @@ import notiboard.notice.dto.NoticeDto.Request;
 import notiboard.notice.dto.NoticeDto.Response;
 import notiboard.notice.dto.SearchType;
 import notiboard.notice.dto.UploadFileDto;
-import notiboard.common.error.CustomException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class NoticeService {
 
   private final NoticeRepository noticeRepository;
   private final AttachmentService attachmentService;
+  private final PolicyChecker policyChecker;
 
   @Transactional
   public Long create(Request request) {
@@ -52,6 +55,7 @@ public class NoticeService {
 
   @Transactional
   public void deleteById(Long id) {
+    requiredSameAuthorWithLoggedIn(id);
     Notice notice = findByIdFetchOrElseThrow(id);
     attachmentService.deleteByNotice(notice);
     noticeRepository.deleteById(id);
@@ -64,6 +68,7 @@ public class NoticeService {
 
   @Transactional
   public Response modify(Long id, Request request) {
+    requiredSameAuthorWithLoggedIn(id);
     Notice notice = findByIdFetchOrElseThrow(id);
     notice.modify(request);
     saveAttachments(notice, request.getAttachments());
@@ -74,6 +79,15 @@ public class NoticeService {
   private Notice findByIdFetchOrElseThrow(Long id) {
     return noticeRepository.findByIdFetch(id)
         .orElseThrow(() -> new CustomException(NOT_FOUND_NOTICE));
+  }
+
+
+  private void requiredSameAuthorWithLoggedIn(Long noticeId) {
+    findByIdFetchOrElseThrow(noticeId);
+    if (noticeRepository.existsByIdAndCreatedById(noticeId, policyChecker.getLoggedUserId())) {
+      return;
+    }
+    throw new CustomException(ErrorCode.FORBIDDEN_NOT_ALLOWED);
   }
 
 }

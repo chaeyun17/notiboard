@@ -1,13 +1,14 @@
-package notiboard.common.error.ui;
+package notiboard.exception.ui;
 
 import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
-import notiboard.common.error.CustomException;
+import notiboard.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +17,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 public class CustomRestExceptionHandler {
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<Object> handleAccessDeniedExceptions(AccessDeniedException ex) {
+    HttpStatus forbidden = HttpStatus.FORBIDDEN;
+    CustomExceptionResponse response = CustomExceptionResponse.builder()
+        .description(ex.getMessage())
+        .message("접근 권한이 없습니다. 인증정보와 권한을 확인해주세요.")
+        .httpStatus(forbidden)
+        .build();
+    return ResponseEntity.status(forbidden).body(response);
+  }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {

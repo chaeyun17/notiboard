@@ -1,7 +1,7 @@
 package notiboard.notice.domain;
 
 
-import static notiboard.common.error.ErrorCode.INVALID_INPUT_CONTENT;
+import static notiboard.exception.ErrorCode.INVALID_INPUT_CONTENT;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -9,7 +9,7 @@ import jakarta.persistence.Lob;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import notiboard.common.error.CustomException;
+import notiboard.exception.CustomException;
 import org.apache.commons.lang3.StringUtils;
 
 @Embeddable

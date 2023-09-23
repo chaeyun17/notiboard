@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,8 @@ public class NoticeController {
 
   private final NoticeService noticeService;
 
-  @GetMapping("/search")
+  @PreAuthorize("@policyChecker.permitAnonymous()")
+  @GetMapping("")
   public ResponseEntity<Page<NoticeDto.Response>> search(
       @RequestParam(required = false, defaultValue = "TITLE") SearchType searchType,
       @RequestParam(required = false, defaultValue = "") String keyword,
@@ -46,6 +48,15 @@ public class NoticeController {
     return ResponseEntity.ok(notices);
   }
 
+  @PreAuthorize("@policyChecker.permitAnonymous()")
+  @GetMapping("/{id}")
+  public ResponseEntity<NoticeDto.Response> findById(@PathVariable Long id) {
+    NoticeDto.Response response = noticeService.findById(id);
+    return ResponseEntity.ok(response);
+  }
+
+
+  @PreAuthorize("@policyChecker.requiredLogin()")
   @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<Void> create(
       @RequestPart(value = "notice") @Valid NoticeDto.Request request,
@@ -55,12 +66,7 @@ public class NoticeController {
     return ResponseEntity.created(URI.create("/api/v1/notices/" + id)).build();
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<NoticeDto.Response> findById(@PathVariable Long id) {
-    NoticeDto.Response response = noticeService.findById(id);
-    return ResponseEntity.ok(response);
-  }
-
+  @PreAuthorize("@policyChecker.requiredLogin()")
   @PutMapping("/{id}")
   public ResponseEntity<NoticeDto.Response> modify(@PathVariable Long id,
       @RequestPart(value = "notice") @Valid NoticeDto.Request request,
@@ -70,6 +76,7 @@ public class NoticeController {
     return ResponseEntity.ok(response);
   }
 
+  @PreAuthorize("@policyChecker.requiredLogin()")
   @DeleteMapping("/{id}")
   public ResponseEntity<NoticeDto.Response> deleteById(@PathVariable Long id) {
     noticeService.deleteById(id);

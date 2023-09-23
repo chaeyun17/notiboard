@@ -1,4 +1,4 @@
-package notiboard.common.error;
+package notiboard.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,9 @@ public enum ErrorCode {
   NOT_FOUND_ATTACHMENT("첨부파일을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   NOT_FOUND_MEMBER("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   DUPLICATE_MEMBER_USERNAME("중복된 아이디입니다.", HttpStatus.BAD_REQUEST),
-  NOT_MATCH_CREDENTIAL("아이디 또는 비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST);
+  NOT_MATCH_CREDENTIAL("아이디 또는 비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST),
+  FORBIDDEN_NOT_LOGGED_MEMBER("인증정보가 없거나 올바르지 않습니다.", HttpStatus.FORBIDDEN),
+  FORBIDDEN_NOT_ALLOWED("해당 권한이 없습니다.", HttpStatus.FORBIDDEN);
 
   public String message;
   public HttpStatus statusCode;

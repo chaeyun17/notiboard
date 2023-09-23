@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long>, NoticeRepoCustom {
 
+  boolean existsByIdAndCreatedById(Long noticeId, Long memberId);
 }

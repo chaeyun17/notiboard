@@ -1,6 +1,6 @@
 package notiboard.member.application;
 
-import static notiboard.common.error.ErrorCode.NOT_FOUND_MEMBER;
+import static notiboard.exception.ErrorCode.NOT_FOUND_MEMBER;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

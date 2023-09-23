@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
   private final AuthTokenFilter authTokenFilter;
@@ -39,8 +41,7 @@ public class SecurityConfig {
         .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(
             SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests((authz) -> authz
-            .requestMatchers("/api/v1/auth/token", "/api/v1/auth/signup").permitAll()
-            .requestMatchers("/api/v1/notices/search").permitAll()
+            .requestMatchers("/api/v1/notices/**", "/api/v1/auth/**").permitAll()
             .anyRequest().authenticated());
     http.addFilterBefore(authTokenFilter,
         UsernamePasswordAuthenticationFilter.class);

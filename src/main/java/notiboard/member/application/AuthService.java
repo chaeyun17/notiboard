@@ -1,9 +1,9 @@
 package notiboard.member.application;
 
-import static notiboard.common.error.ErrorCode.NOT_MATCH_CREDENTIAL;
+import static notiboard.exception.ErrorCode.NOT_MATCH_CREDENTIAL;
 
 import lombok.RequiredArgsConstructor;
-import notiboard.common.error.CustomException;
+import notiboard.exception.CustomException;
 import notiboard.member.dto.TokenDto.Request;
 import notiboard.member.dto.TokenDto.Response;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
 package notiboard.notice.domain;
 
-import static notiboard.common.error.ErrorCode.INVALID_INPUT_POSTING_PERIOD;
-import static notiboard.common.error.ErrorCode.INVALID_INPUT_POSTING_PERIOD_IS_NULL;
+import static notiboard.exception.ErrorCode.INVALID_INPUT_POSTING_PERIOD;
+import static notiboard.exception.ErrorCode.INVALID_INPUT_POSTING_PERIOD_IS_NULL;
 
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import notiboard.common.error.CustomException;
+import notiboard.exception.CustomException;
 
 @Getter
 @Embeddable

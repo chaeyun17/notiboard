@@ -1,9 +1,9 @@
 package notiboard.member.application;
 
-import static notiboard.common.error.ErrorCode.DUPLICATE_MEMBER_USERNAME;
+import static notiboard.exception.ErrorCode.DUPLICATE_MEMBER_USERNAME;
 
 import lombok.RequiredArgsConstructor;
-import notiboard.common.error.CustomException;
+import notiboard.exception.CustomException;
 import notiboard.member.dao.MemberRepository;
 import notiboard.member.domain.Member;
 import notiboard.member.dto.MemberDto.Request;

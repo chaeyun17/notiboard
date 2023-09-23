@@ -1,9 +1,9 @@
-package notiboard.common.error.ui;
+package notiboard.exception.ui;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
-import notiboard.common.error.CustomException;
+import notiboard.exception.CustomException;
 import org.springframework.http.HttpStatus;
 
 @Data
