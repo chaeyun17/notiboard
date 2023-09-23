@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,7 +56,7 @@ public class NoticeController {
 
 
   @PreAuthorize("@policyChecker.requiredLogin()")
-  @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  @PostMapping(value = "")
   public ResponseEntity<Void> create(
       @RequestPart(value = "notice") @Valid NoticeDto.Request request,
       @RequestPart List<MultipartFile> attachments) {
@@ -67,7 +66,7 @@ public class NoticeController {
   }
 
   @PreAuthorize("@policyChecker.requiredLogin()")
-  @PutMapping("/{id}")
+  @PutMapping(value = "/{id}")
   public ResponseEntity<NoticeDto.Response> modify(@PathVariable Long id,
       @RequestPart(value = "notice") @Valid NoticeDto.Request request,
       @RequestPart List<MultipartFile> attachments) {

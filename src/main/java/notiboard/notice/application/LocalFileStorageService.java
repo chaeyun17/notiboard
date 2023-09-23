@@ -25,8 +25,8 @@ public class LocalFileStorageService implements FileStorageService {
   @Transactional
   @Override
   public UploadFile saveFile(UploadFileDto dto) {
-    String saveFileName = generateFileName(dto.getOriginalFileName());
-    Path filePath = FILE_STORAGE_PATH.resolve(saveFileName);
+    String saveFileName = dto.getOriginalFileName();
+    Path filePath = FILE_STORAGE_PATH.resolve(generateFileName(dto.getOriginalFileName()));
     try {
       Files.createDirectories(FILE_STORAGE_PATH);
       Files.createFile(filePath);

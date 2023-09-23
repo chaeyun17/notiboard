@@ -16,11 +16,11 @@ spring:
       max-request-size: 100MB
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: true
+    show-sql: false
     hibernate.ddl-auto: validate
     properties:
       hibernate:
-        show_sql: true # 임시로 켜둠
+        show_sql: false
         format_sql: true
         use_sql_comments: true
 

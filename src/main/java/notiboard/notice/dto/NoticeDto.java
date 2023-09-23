@@ -35,7 +35,9 @@ public class NoticeDto implements Serializable {
     private LocalDateTime openingTime;
     @NotNull(message = "종료일시는 필수 입력입니다.")
     private LocalDateTime closingTime;
+    @JsonInclude(Include.NON_NULL)
     private List<MultipartFile> attachments = new ArrayList<>();
+    @JsonInclude(Include.NON_NULL)
     private List<Long> deleteAttachmentIds = new ArrayList<>();
 
     public void addAttachments(List<MultipartFile> files) {

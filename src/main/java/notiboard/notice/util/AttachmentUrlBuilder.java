@@ -10,7 +10,7 @@ public class AttachmentUrlBuilder {
   }
 
   public static String getDownloadUrl(Long attachmentId) {
-    return getBaseUrl() + AttachmentController.BASE_URL + attachmentId + "/download";
+    return getBaseUrl() + AttachmentController.BASE_URL + "/" + attachmentId + "/download";
   }
 
 }

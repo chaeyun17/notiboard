@@ -11,6 +11,7 @@ public class TokenDto {
 
   @Data
   @NoArgsConstructor
+  @AllArgsConstructor
   public static class Request {
 
     @NotNull
