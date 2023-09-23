@@ -40,6 +40,7 @@ public class SecurityConfig {
             SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests((authz) -> authz
             .requestMatchers("/api/v1/auth/token", "/api/v1/auth/signup").permitAll()
+            .requestMatchers("/api/v1/notices/search").permitAll()
             .anyRequest().authenticated());
     http.addFilterBefore(authTokenFilter,
         UsernamePasswordAuthenticationFilter.class);

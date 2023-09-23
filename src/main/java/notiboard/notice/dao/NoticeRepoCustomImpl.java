@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import notiboard.member.dao.MemberProjection;
 import notiboard.notice.domain.Notice;
 import notiboard.notice.dto.NoticeDto.Response;
 import notiboard.notice.dto.SearchType;
@@ -39,7 +40,8 @@ public class NoticeRepoCustomImpl extends QuerydslRepositorySupport implements N
         notice.postingPeriod.closingTime,
         notice.createdAt,
         notice.modifiedAt,
-        notice.postStats.viewCount);
+        PostStatsProjection.projection(notice.postStats).as("postStats"),
+        MemberProjection.projection(notice.createdBy).as("createdBy"));
     query = query.select(projection).from(notice);
 
     Predicate predicate = notice.deleted.isFalse();
@@ -67,6 +69,8 @@ public class NoticeRepoCustomImpl extends QuerydslRepositorySupport implements N
         .innerJoin(notice.attachments)
         .fetchJoin()
         .innerJoin(notice.postStats)
+        .fetchJoin()
+        .innerJoin(notice.createdBy)
         .fetchJoin()
         .where(notice.id.eq(id)).fetchOne();
     return Optional.ofNullable(result);

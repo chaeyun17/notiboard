@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import notiboard.member.domain.Member;
 
 public class MemberDto {
 
@@ -21,6 +22,22 @@ public class MemberDto {
     @NotNull(message = "닉네임은 필수입니다.")
     @Size(min = 3, max = 50, message = "닉네임은 3~50 글자여야 합니다.")
     private String nickname;
+  }
+
+  @Data
+  @NoArgsConstructor
+  public static class Response {
+
+    private Long id;
+    private String username;
+    private String nickname;
+
+    public Response(Member member) {
+      this.id = member.getId();
+      this.username = member.getUsername();
+      this.nickname = member.getNickname();
+    }
+
   }
 
 }

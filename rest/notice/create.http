@@ -1,6 +1,6 @@
 POST http://localhost:8080/api/v1/notices
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFleXVuTGVlIiwiaWF0IjoxNjk1NDA1NDA4LCJleHAiOjE2OTU0MDkwMDh9.Nao-IzwbfO8GDE0sWT4s1RrC5dNSBu1TFZZik9c5pZ_uV1tjyZHELpbPTX4hiXmKd8b-1-Se7W9odr0uf8DEZw
+Authorization: Bearer {{ access_token }}}
 
 --boundary
 Content-Disposition: form-data; name="attachments"; filename="one.txt"

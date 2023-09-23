@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import notiboard.member.dto.MemberDto;
 import notiboard.notice.domain.Notice;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,8 +59,9 @@ public class NoticeDto implements Serializable {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     @JsonInclude(Include.NON_NULL)
-    private List<AttachmentDto.Response> attachments = new ArrayList<>();
-    private Long viewCount;
+    private List<AttachmentDto.Response> attachments;
+    private PostStatsDto.Response postStats;
+    private MemberDto.Response createdBy;
 
     public Response(Notice notice) {
       this.id = notice.getId();
@@ -69,9 +71,10 @@ public class NoticeDto implements Serializable {
       this.closingTime = notice.getPostingPeriod().getClosingTime();
       this.createdAt = notice.getCreatedAt();
       this.modifiedAt = notice.getModifiedAt();
-      this.attachments.addAll(notice.getAttachments().stream()
-          .map(AttachmentDto.Response::new).toList());
-      this.viewCount = notice.getPostStats().getViewCount();
+      this.attachments = notice.getAttachments().stream()
+          .map(AttachmentDto.Response::new).toList();
+      this.postStats = new PostStatsDto.Response(notice.getPostStats());
+      this.createdBy = new MemberDto.Response(notice.getCreatedBy());
     }
 
   }

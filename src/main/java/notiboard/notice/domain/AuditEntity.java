@@ -18,5 +18,5 @@ public class AuditEntity {
 
   @LastModifiedDate
   private LocalDateTime modifiedAt;
-
+  
 }

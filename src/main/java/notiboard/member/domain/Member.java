@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import notiboard.member.dto.MemberDto.Request;
 import notiboard.notice.domain.AuditEntity;
@@ -18,13 +19,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Getter
 @Entity
 @Table(name = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE member SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
 public class Member extends AuditEntity implements UserDetails {
-
+  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

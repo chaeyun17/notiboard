@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -20,10 +21,12 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import notiboard.member.domain.Member;
 import notiboard.notice.dto.NoticeDto.Request;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.annotation.CreatedBy;
 
 @Entity
 @Getter
@@ -61,6 +64,11 @@ public class Notice extends AuditEntity {
   @JoinColumn(name = "post_stats_id",
       foreignKey = @ForeignKey(name = "fk_notice_to_post_stats"))
   private PostStats postStats;
+
+  @CreatedBy
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "created_by", updatable = false, nullable = false, foreignKey = @ForeignKey(name = "fk_notice_to_member"))
+  private Member createdBy;
 
   private Notice(Title title, Content content, PostingPeriod postingPeriod, PostStats postStats) {
     this.title = title;
