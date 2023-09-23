@@ -15,9 +15,10 @@ public class MemberDto {
   public static class Request {
 
     @NotNull(message = "아이디는 필수 입니다.")
-    @Size(min = 5, max = 50, message = "아이디는 5~50 글자여야 합니다.")
+    @Size(min = 5, max = 20, message = "아이디는 5자 이상 20자 이하여야 합니다.")
     private String username;
 
+    @Size(min = 5, max = 50, message = "비밀번호는 5자 이상 20자 이하여야 합니다.")
     @NotNull(message = "비밀번호는 필수 입니다.")
     private String password;
 
@@ -38,7 +39,7 @@ public class MemberDto {
     public Response(Member member) {
       this.id = member.getId();
       this.username = member.getUsername();
-      this.nickname = member.getNickname();
+      this.nickname = member.getNickname().toText();
     }
 
   }

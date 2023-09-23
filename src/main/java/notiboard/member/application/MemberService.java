@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import notiboard.exception.CustomException;
 import notiboard.member.dao.MemberRepository;
 import notiboard.member.domain.Member;
+import notiboard.member.domain.Username;
 import notiboard.member.dto.MemberDto.Request;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class MemberService {
   }
 
   public void validate(Request request) {
-    if (memberRepository.existsByUsername(request.getUsername())) {
+    if (memberRepository.existsByUsername(Username.of(request.getUsername()))) {
       throw new CustomException(DUPLICATE_MEMBER_USERNAME);
     }
   }

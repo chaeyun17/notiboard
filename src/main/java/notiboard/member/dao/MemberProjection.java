@@ -10,7 +10,7 @@ public class MemberProjection {
   public static QBean<MemberDto.Response> projection(QMember member) {
     return Projections.fields(MemberDto.Response.class,
         member.id,
-        member.username,
-        member.nickname);
+        member.username.username,
+        member.nickname.nickname);
   }
 }

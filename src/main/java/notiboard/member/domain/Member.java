@@ -1,6 +1,8 @@
 package notiboard.member.domain;
 
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,32 +28,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SQLDelete(sql = "UPDATE member SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
 public class Member extends AuditEntity implements UserDetails {
-  
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true)
-  private String username;
+  @Embedded
+  @AttributeOverride(name = "username", column = @Column(name = "username", unique = true))
+  private Username username;
 
-  @Column
-  private String password;
+  @Embedded
+  private Password password;
 
-  @Column
-  private String nickname;
+  @Embedded
+  private Nickname nickname;
 
   @Column
   private boolean deleted = false;
 
-  private Member(String username, String password, String nickname) {
+  private Member(Username username, Password password, Nickname nickname) {
     this.username = username;
     this.password = password;
     this.nickname = nickname;
   }
 
   public static Member of(Request request, PasswordEncoder passwordEncoder) {
-    String encryptedPassword = passwordEncoder.encode(request.getPassword());
-    return new Member(request.getUsername(), encryptedPassword, request.getNickname());
+    return new Member(Username.of(request.getUsername()),
+        Password.ofEncrpyt(request.getPassword(), passwordEncoder),
+        Nickname.of(request.getNickname()));
   }
 
   @Override
@@ -61,12 +65,12 @@ public class Member extends AuditEntity implements UserDetails {
 
   @Override
   public String getPassword() {
-    return this.password;
+    return this.password.toText();
   }
 
   @Override
   public String getUsername() {
-    return this.username;
+    return this.username.toText();
   }
 
   @Override
