@@ -31,14 +31,18 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class NoticeService {
 
+  public static final String CACHE_NOTICES = "notices";
+  public static final String CACHE_NOTICE = "notice";
+  public static final String NOTICE_CACHE_MANAGER = "noticeCacheManager";
   private final NoticeRepository noticeRepository;
   private final AttachmentService attachmentService;
   private final PolicyChecker policyChecker;
   private final NoticeContentService noticeContentService;
   private final PostStatsService postStatsService;
 
+
   @Transactional
-  @CacheEvict(value = "notices", allEntries = true, cacheManager = "noticeCacheManager")
+  @CacheEvict(value = CACHE_NOTICES, allEntries = true, cacheManager = NOTICE_CACHE_MANAGER)
   public Long create(Request request) {
     Notice notice = noticeRepository.save(Notice.of(request));
     saveAttachments(notice, request.getAttachments());
@@ -52,8 +56,8 @@ public class NoticeService {
   }
 
   @Caching(evict = {
-      @CacheEvict(value = "notice", key = "#id", cacheManager = "noticeCacheManager"),
-      @CacheEvict(value = "notices", allEntries = true, cacheManager = "noticeCacheManager")
+      @CacheEvict(value = CACHE_NOTICE, key = "#id", cacheManager = NOTICE_CACHE_MANAGER),
+      @CacheEvict(value = CACHE_NOTICES, allEntries = true, cacheManager = NOTICE_CACHE_MANAGER)
   })
   @Transactional
   public void deleteById(Long id) {
@@ -63,7 +67,7 @@ public class NoticeService {
     noticeRepository.deleteById(id);
   }
 
-  @Cacheable(value = "notices", cacheManager = "noticeCacheManager")
+  @Cacheable(value = CACHE_NOTICES, cacheManager = NOTICE_CACHE_MANAGER)
   public PageDto<Response> search(SearchType searchType, String keyword, LocalDateTime from,
       LocalDateTime to, Pageable pageable) {
     Page<Response> notices = noticeRepository.search(searchType, keyword, from, to, pageable);
@@ -71,8 +75,8 @@ public class NoticeService {
   }
 
   @Caching(evict = {
-      @CacheEvict(value = "notice", key = "#id", cacheManager = "noticeCacheManager"),
-      @CacheEvict(value = "notices", allEntries = true, cacheManager = "noticeCacheManager")
+      @CacheEvict(value = CACHE_NOTICE, key = "#id", cacheManager = NOTICE_CACHE_MANAGER),
+      @CacheEvict(value = CACHE_NOTICES, allEntries = true, cacheManager = NOTICE_CACHE_MANAGER)
   })
   @Transactional
   public Response modify(Long id, Request request) {

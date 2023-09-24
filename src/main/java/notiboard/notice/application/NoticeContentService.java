@@ -1,6 +1,7 @@
 package notiboard.notice.application;
 
 import static notiboard.exception.ErrorCode.NOT_FOUND_NOTICE;
+import static notiboard.notice.application.NoticeService.NOTICE_CACHE_MANAGER;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ public class NoticeContentService {
 
   private final NoticeRepository noticeRepository;
 
-  @Cacheable(value = "notice", key = "#id", cacheManager = "noticeCacheManager")
+  @Cacheable(value = NoticeService.CACHE_NOTICE, key = "#id", cacheManager = NOTICE_CACHE_MANAGER)
   public Response findById(Long id) {
     Notice notice = findByIdFetchOrElseThrow(id);
     return new Response(notice);

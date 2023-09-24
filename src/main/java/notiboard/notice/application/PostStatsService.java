@@ -1,9 +1,13 @@
 package notiboard.notice.application;
 
+import static notiboard.notice.application.NoticeService.NOTICE_CACHE_MANAGER;
+
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import notiboard.common.dao.RedisDao;
 import notiboard.notice.dao.PostStatsRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,14 +31,23 @@ public class PostStatsService {
   public long increaseViewCnt(Long postStatsId) {
     long viewCount = getViewCount(postStatsId) + 1;
     redisDao.setValues(String.valueOf(postStatsId), String.valueOf(viewCount));
-    // TODO: ASYNC Job
-    updateViewCountDB(postStatsId, viewCount);
     return viewCount;
   }
 
+  @Caching(evict = {
+      @CacheEvict(value = NoticeService.CACHE_NOTICES, allEntries = true, cacheManager = NOTICE_CACHE_MANAGER)
+  })
   @Transactional
-  public void updateViewCountDB(Long postStatsId, long viewCount) {
-    postStatsRepository.findById(postStatsId).orElseThrow().setViewCount(viewCount);
+  public void syncAllViewCnt() {
+    postStatsRepository.findAll().forEach((stats) -> {
+      Optional<String> value = redisDao.getValues(String.valueOf(stats.getId()));
+      if (value.isEmpty()) {
+        return;
+      }
+      long count = Long.parseLong(value.get());
+      stats.setViewCount(count);
+    });
   }
+
 
 }

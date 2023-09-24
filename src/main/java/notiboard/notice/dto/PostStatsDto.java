@@ -1,5 +1,7 @@
 package notiboard.notice.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +13,7 @@ public class PostStatsDto implements Serializable {
   @Data
   @NoArgsConstructor
   @AllArgsConstructor
+  @JsonInclude(Include.NON_NULL)
   public static class Response implements Serializable {
 
     private Long id;

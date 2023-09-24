@@ -1,5 +1,7 @@
 package notiboard.config.redis;
 
+import static notiboard.notice.application.NoticeService.NOTICE_CACHE_MANAGER;
+
 import java.time.Duration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -19,7 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
-  @Bean
+  @Bean(NOTICE_CACHE_MANAGER)
   public CacheManager noticeCacheManager(RedisConnectionFactory connectionFactory) {
     RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
         .serializeKeysWith(
