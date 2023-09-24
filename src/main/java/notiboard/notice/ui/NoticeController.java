@@ -52,7 +52,6 @@ public class NoticeController {
   @GetMapping("/{id}")
   public ResponseEntity<NoticeDto.Response> findById(@PathVariable Long id) {
     NoticeDto.Response response = noticeService.findById(id);
-    response.getPostStats().setViewCount(noticeService.increaseViewCnt(id));
     return ResponseEntity.ok(response);
   }
 

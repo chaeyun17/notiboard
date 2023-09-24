@@ -1,7 +1,5 @@
 package notiboard.notice.application;
 
-import static notiboard.exception.ErrorCode.NOT_FOUND_NOTICE;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +10,7 @@ import notiboard.exception.ErrorCode;
 import notiboard.notice.dao.NoticeRepository;
 import notiboard.notice.domain.Attachment;
 import notiboard.notice.domain.Notice;
+import notiboard.notice.dto.NoticeDto;
 import notiboard.notice.dto.NoticeDto.Request;
 import notiboard.notice.dto.NoticeDto.Response;
 import notiboard.notice.dto.PageDto;
@@ -20,6 +19,7 @@ import notiboard.notice.dto.UploadFileDto;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +34,8 @@ public class NoticeService {
   private final NoticeRepository noticeRepository;
   private final AttachmentService attachmentService;
   private final PolicyChecker policyChecker;
+  private final NoticeContentService noticeContentService;
+  private final PostStatsService postStatsService;
 
   @Transactional
   @CacheEvict(value = "notices", allEntries = true, cacheManager = "noticeCacheManager")
@@ -43,10 +45,10 @@ public class NoticeService {
     return notice.getId();
   }
 
-  @Cacheable(value = "notice", key = "#id", cacheManager = "noticeCacheManager")
   public Response findById(Long id) {
-    Notice notice = findByIdFetchOrElseThrow(id);
-    return new Response(notice);
+    NoticeDto.Response notice = noticeContentService.findById(id);
+    long viewCount = postStatsService.increaseViewCnt(notice.getPostStats().getId());
+    return notice.setViewCount(viewCount);
   }
 
   @Caching(evict = {
@@ -64,7 +66,8 @@ public class NoticeService {
   @Cacheable(value = "notices", cacheManager = "noticeCacheManager")
   public PageDto<Response> search(SearchType searchType, String keyword, LocalDateTime from,
       LocalDateTime to, Pageable pageable) {
-    return new PageDto<>(noticeRepository.search(searchType, keyword, from, to, pageable));
+    Page<Response> notices = noticeRepository.search(searchType, keyword, from, to, pageable);
+    return new PageDto<>(notices);
   }
 
   @Caching(evict = {
@@ -82,13 +85,7 @@ public class NoticeService {
   }
 
   private Notice findByIdFetchOrElseThrow(Long id) {
-    return noticeRepository.findByIdFetch(id)
-        .orElseThrow(() -> new CustomException(NOT_FOUND_NOTICE));
-  }
-
-  @Transactional
-  public Long increaseViewCnt(Long id) {
-    return findByIdFetchOrElseThrow(id).increaseViewCnt();
+    return noticeContentService.findByIdFetchOrElseThrow(id);
   }
 
   private void requiredSameAuthorWithLoggedIn(Long noticeId) {

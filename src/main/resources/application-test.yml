@@ -8,7 +8,3 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
-
-app:
-  jwtSecret: cnBkNDZhRm01cXpKRXVGazVxbXZNRUtYeU5UN1FDRUNRdzJVeHgzNmJNclR3U0s4b24zOTNjOFcyUG5kZ2dkUUZKWkhleVk4dWpkSlBBV3F5emU2TDZNOFFBcG9OM1FTZHI2RQ==
-  jwtExpirationMs: 3600000

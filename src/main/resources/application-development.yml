@@ -9,6 +9,7 @@ spring:
         format_sql: true
         use_sql_comments: true
 
-app:
-  jwtSecret: Q0FEVVI2MlJwTndtZ3FMRllhWUVmTUFCbmlyTjduSHU0S3pnazlGMzdCeVZLOGhwbldEUVpjZjNialZxUTV6TXdGbUFrN1M5aUEzZFlxU0JiclZnTUhremJnenVOSkN1M1R5NQ==
-  jwtExpirationMs: 3600000
+logging:
+  level:
+    org.springframework.data.*.*: trace
+    org.springframework.cache.*: trace

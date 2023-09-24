@@ -98,5 +98,15 @@ public class NoticeDto implements Serializable {
       this.createdBy = new MemberDto.Response(notice.getCreatedBy());
     }
 
+    public static Response ofViewCount(Notice notice, long viewCount) {
+      Response response = new Response(notice);
+      response.getPostStats().setViewCount(viewCount);
+      return response;
+    }
+
+    public Response setViewCount(long viewCount) {
+      this.postStats.setViewCount(viewCount);
+      return this;
+    }
   }
 }

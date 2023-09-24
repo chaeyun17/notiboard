@@ -13,9 +13,11 @@ public class PostStatsDto implements Serializable {
   @AllArgsConstructor
   public static class Response implements Serializable {
 
+    private Long id;
     private Long viewCount;
 
     public Response(PostStats postStats) {
+      this.id = postStats.getId();
       this.viewCount = postStats.getViewCount();
     }
   }

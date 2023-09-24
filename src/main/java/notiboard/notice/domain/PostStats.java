@@ -38,7 +38,7 @@ public class PostStats {
     return new PostStats(0L);
   }
 
-  public void increaseViewCnt() {
-    this.viewCount++;
+  public void setViewCount(long viewCount) {
+    this.viewCount = viewCount;
   }
 }

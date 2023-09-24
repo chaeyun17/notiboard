@@ -123,9 +123,4 @@ public class Notice extends AuditEntity {
     this.attachments.remove(attachment);
   }
 
-  public long increaseViewCnt() {
-    this.postStats.increaseViewCnt();
-    return this.postStats.getViewCount();
-  }
-
 }
