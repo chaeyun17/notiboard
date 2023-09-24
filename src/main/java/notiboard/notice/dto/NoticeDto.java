@@ -67,6 +67,7 @@ public class NoticeDto implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime openingTime;
 
+    @JsonInclude(Include.NON_NULL)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime closingTime;
@@ -75,6 +76,7 @@ public class NoticeDto implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
 
+    @JsonInclude(Include.NON_NULL)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime modifiedAt;

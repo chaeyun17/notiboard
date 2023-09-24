@@ -37,9 +37,7 @@ public class NoticeRepoCustomImpl extends QuerydslRepositorySupport implements N
         notice.id,
         notice.title.title,
         notice.postingPeriod.openingTime,
-        notice.postingPeriod.closingTime,
         notice.createdAt,
-        notice.modifiedAt,
         PostStatsProjection.projection(notice.postStats).as("postStats"),
         MemberProjection.projection(notice.createdBy).as("createdBy"));
     query = query.select(projection).from(notice);

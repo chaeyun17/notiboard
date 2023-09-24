@@ -16,6 +16,8 @@ import notiboard.notice.dto.NoticeDto.Response;
 import notiboard.notice.dto.PageDto;
 import notiboard.notice.dto.SearchType;
 import notiboard.notice.dto.UploadFileDto;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -39,6 +41,7 @@ public class NoticeService {
   private final PolicyChecker policyChecker;
   private final NoticeContentService noticeContentService;
   private final PostStatsService postStatsService;
+  private final CacheManager cacheManager;
 
 
   @Transactional
@@ -49,6 +52,7 @@ public class NoticeService {
     return notice.getId();
   }
 
+  @Transactional
   public Response findById(Long id) {
     NoticeDto.Response notice = noticeContentService.findById(id);
     long viewCount = postStatsService.increaseViewCnt(notice.getPostStats().getId());
@@ -105,5 +109,22 @@ public class NoticeService {
         .map(UploadFileDto::new)
         .toList();
     return attachmentService.saveFiles(uploadFileDtoList, notice);
+  }
+
+  public void clearNoticesCache() {
+    Cache cache = cacheManager.getCache(CACHE_NOTICES);
+    if (cache == null) {
+      return;
+    }
+    cache.clear();
+    log.info("Clear notices cache");
+  }
+
+  @Transactional
+  public void closeNotices() {
+    LocalDateTime now = LocalDateTime.now();
+    List<Notice> notices = noticeRepository.findAllByPostingPeriodClosingTimeIsBefore(now);
+    noticeRepository.deleteAll(notices);
+    log.info("Close notices. size: {}", notices.size());
   }
 }

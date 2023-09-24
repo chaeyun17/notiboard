@@ -102,7 +102,6 @@ public class NoticeAcceptStep {
     NoticeDto.Response 첫번째 = 공지사항_검색_응답_데이터.get(0);
     assertThat(첫번째.getTitle()).isEqualTo(공지사항_수정_응답_데이터.getTitle());
     assertThat(첫번째.getOpeningTime()).isEqualTo(공지사항_수정_응답_데이터.getOpeningTime());
-    assertThat(첫번째.getClosingTime()).isEqualTo(공지사항_수정_응답_데이터.getClosingTime());
   }
 
   private static List<NoticeDto.Response> extractFromJson(JsonNode jsonNode) {
