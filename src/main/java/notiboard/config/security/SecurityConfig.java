@@ -41,7 +41,8 @@ public class SecurityConfig {
         .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(
             SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests((authz) -> authz
-            .requestMatchers("/api/v1/notices/**", "/api/v1/auth/**").permitAll()
+            .requestMatchers("/api/v1/notices/**", "/api/v1/auth/**", "/api/v1/attachments/**")
+            .permitAll()
             .anyRequest().authenticated());
     http.addFilterBefore(authTokenFilter,
         UsernamePasswordAuthenticationFilter.class);

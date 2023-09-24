@@ -4,7 +4,6 @@ package notiboard.notice.domain;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import java.nio.file.Path;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,12 +33,12 @@ public class UploadFile {
     this.fileSize = fileSize;
   }
 
-  public static UploadFile of(Path savedFile, String saveFileName, Long fileSize,
+  public static UploadFile of(String filePath, String saveFileName, Long fileSize,
       StorageType storageType) {
-    if (savedFile == null) {
+    if (filePath == null) {
       throw new IllegalArgumentException("저장되지 않은 경로입니다.");
     }
-    return new UploadFile(savedFile.toAbsolutePath().toString(), saveFileName, fileSize,
+    return new UploadFile(filePath, saveFileName, fileSize,
         storageType);
   }
 

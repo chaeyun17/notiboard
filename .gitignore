@@ -38,5 +38,6 @@ out/
 
 
 mysql/
+minio/
 files/
 .idea/httpRequests/

@@ -10,7 +10,8 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import notiboard.config.AppProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,11 +20,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtils {
 
-  @Value("${app.jwtSecret}")
-  private String jwtSecret;
+  private final String jwtSecret;
 
-  @Value("${app.jwtExpirationMs}")
-  private int jwtExpirationMs;
+  private final int jwtExpirationMs;
+
+  @Autowired
+  public JwtUtils(AppProperties appProperties) {
+    this.jwtSecret = appProperties.getJwt().getSecretKey();
+    this.jwtExpirationMs = appProperties.getJwt().getExpirationMs();
+  }
 
   public String generateJwtToken(Authentication authentication) {
     UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();

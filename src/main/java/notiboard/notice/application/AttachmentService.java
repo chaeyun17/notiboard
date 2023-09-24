@@ -4,10 +4,7 @@ import static notiboard.exception.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_LARGE;
 import static notiboard.exception.ErrorCode.INVALID_INPUT_UPLOAD_FILE_TOO_SMALL;
 import static notiboard.exception.ErrorCode.NOT_FOUND_ATTACHMENT;
 
-import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -56,12 +53,7 @@ public class AttachmentService {
 
   public Response download(Long attachmentId, OutputStream outputStream) {
     Attachment attachment = attachmentRepository.findById(attachmentId).orElseThrow();
-    Path path = Path.of(attachment.getUploadFile().getFilePath());
-    try {
-      outputStream.write(Files.readAllBytes(path));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    fileStorageService.getFileByStream(attachment.getUploadFile(), outputStream);
     return new Response(attachment);
   }
 
@@ -71,7 +63,12 @@ public class AttachmentService {
   }
 
   @Transactional
-  public void deleteById(Long id) {
+  public void deleteByNotice(Notice notice) {
+    List<Attachment> attachments = attachmentRepository.findAllByNotice(notice);
+    attachments.stream().map(Attachment::getId).forEach(this::deleteById);
+  }
+
+  private void deleteById(Long id) {
     Attachment attachment = attachmentRepository.findById(id)
         .orElseThrow(() -> new CustomException(NOT_FOUND_ATTACHMENT));
     fileStorageService.delete(attachment.getUploadFile());
@@ -79,9 +76,4 @@ public class AttachmentService {
     attachmentRepository.delete(attachment);
   }
 
-  @Transactional
-  public void deleteByNotice(Notice notice) {
-    List<Attachment> attachments = attachmentRepository.findAllByNotice(notice);
-    attachments.stream().map(Attachment::getId).forEach(this::deleteById);
-  }
 }

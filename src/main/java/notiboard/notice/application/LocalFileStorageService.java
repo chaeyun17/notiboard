@@ -1,22 +1,24 @@
 package notiboard.notice.application;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import notiboard.notice.domain.StorageType;
 import notiboard.notice.domain.UploadFile;
 import notiboard.notice.dto.UploadFileDto;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Primary;
+import notiboard.notice.util.FileNameUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Primary
 @Service
 @Transactional(readOnly = true)
+@ConditionalOnProperty(
+    value = "app.fileStorageProvider",
+    havingValue = "LOCAL"
+)
 public class LocalFileStorageService implements FileStorageService {
 
   public static final Path FILE_STORAGE_PATH = Paths.get("files").toAbsolutePath();
@@ -26,7 +28,8 @@ public class LocalFileStorageService implements FileStorageService {
   @Override
   public UploadFile saveFile(UploadFileDto dto) {
     String saveFileName = dto.getOriginalFileName();
-    Path filePath = FILE_STORAGE_PATH.resolve(generateFileName(dto.getOriginalFileName()));
+    Path filePath = FILE_STORAGE_PATH.resolve(
+        FileNameUtils.buildUniqueFileName(dto.getOriginalFileName(), MAX_LENGTH_FILE_BASE_NAME));
     try {
       Files.createDirectories(FILE_STORAGE_PATH);
       Files.createFile(filePath);
@@ -35,7 +38,18 @@ public class LocalFileStorageService implements FileStorageService {
       deleteFile(filePath);
       throw new RuntimeException(e);
     }
-    return UploadFile.of(filePath, saveFileName, dto.getFileSize(), StorageType.LOCAL);
+    return UploadFile.of(filePath.toAbsolutePath().toString(), saveFileName, dto.getFileSize(),
+        StorageType.LOCAL);
+  }
+
+  @Override
+  public void getFileByStream(UploadFile uploadFile, OutputStream outputStream) {
+    Path path = Path.of(uploadFile.getFilePath());
+    try {
+      outputStream.write(Files.readAllBytes(path));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -56,13 +70,4 @@ public class LocalFileStorageService implements FileStorageService {
     }
   }
 
-  private String generateFileName(String fileName) {
-    String extension = FilenameUtils.getExtension(fileName);
-    String baseName = FilenameUtils.getBaseName(fileName);
-    if (baseName.length() > MAX_LENGTH_FILE_BASE_NAME) {
-      baseName = StringUtils.substring(baseName, 0, MAX_LENGTH_FILE_BASE_NAME);
-    }
-    return baseName + "_" + StringUtils.substring(UUID.randomUUID().toString(), 0, 5) + "."
-        + extension;
-  }
 }
