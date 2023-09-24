@@ -2,6 +2,10 @@ package notiboard.notice.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
@@ -24,7 +28,7 @@ public class NoticeDto implements Serializable {
   @AllArgsConstructor
   @Data
   @NoArgsConstructor
-  public static class Request {
+  public static class Request implements Serializable {
 
     @NotNull(message = "제목은 필수 입력입니다.")
     @Size(min = 1, max = 100, message = "제목은 100자 이하여야 합니다.")
@@ -50,16 +54,31 @@ public class NoticeDto implements Serializable {
   @AllArgsConstructor
   @Data
   @NoArgsConstructor
-  public static class Response {
+  public static class Response implements Serializable {
 
     private Long id;
+
     private String title;
+
     @JsonInclude(Include.NON_NULL)
     private String content;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime openingTime;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime closingTime;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime modifiedAt;
+
     @JsonInclude(Include.NON_NULL)
     private List<AttachmentDto.Response> attachments;
     private PostStatsDto.Response postStats;

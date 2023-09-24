@@ -7,8 +7,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import notiboard.notice.application.NoticeService;
 import notiboard.notice.dto.NoticeDto;
+import notiboard.notice.dto.NoticeDto.Response;
+import notiboard.notice.dto.PageDto;
 import notiboard.notice.dto.SearchType;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -34,7 +35,7 @@ public class NoticeController {
 
   @PreAuthorize("@policyChecker.permitAnonymous()")
   @GetMapping("")
-  public ResponseEntity<Page<NoticeDto.Response>> search(
+  public ResponseEntity<PageDto<NoticeDto.Response>> search(
       @RequestParam(required = false, defaultValue = "TITLE") SearchType searchType,
       @RequestParam(required = false, defaultValue = "") String keyword,
       @RequestParam(required = false) LocalDateTime from,
@@ -42,7 +43,7 @@ public class NoticeController {
       @PageableDefault(size = 100, sort = "createdAt", direction = Direction.DESC)
       Pageable pageable
   ) {
-    Page<NoticeDto.Response> notices = noticeService.search(searchType, keyword, from, to,
+    PageDto<Response> notices = noticeService.search(searchType, keyword, from, to,
         pageable);
     return ResponseEntity.ok(notices);
   }
@@ -51,6 +52,7 @@ public class NoticeController {
   @GetMapping("/{id}")
   public ResponseEntity<NoticeDto.Response> findById(@PathVariable Long id) {
     NoticeDto.Response response = noticeService.findById(id);
+    response.getPostStats().setViewCount(noticeService.increaseViewCnt(id));
     return ResponseEntity.ok(response);
   }
 

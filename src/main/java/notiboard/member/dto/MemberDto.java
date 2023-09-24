@@ -2,17 +2,18 @@ package notiboard.member.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import notiboard.member.domain.Member;
 
-public class MemberDto {
+public class MemberDto implements Serializable {
 
   @Data
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class Request {
+  public static class Request implements Serializable {
 
     @NotNull(message = "아이디는 필수 입니다.")
     @Size(min = 5, max = 20, message = "아이디는 5자 이상 20자 이하여야 합니다.")
@@ -30,7 +31,7 @@ public class MemberDto {
 
   @Data
   @NoArgsConstructor
-  public static class Response {
+  public static class Response implements Serializable {
 
     private Long id;
     private String username;

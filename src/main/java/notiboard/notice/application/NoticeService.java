@@ -14,9 +14,12 @@ import notiboard.notice.domain.Attachment;
 import notiboard.notice.domain.Notice;
 import notiboard.notice.dto.NoticeDto.Request;
 import notiboard.notice.dto.NoticeDto.Response;
+import notiboard.notice.dto.PageDto;
 import notiboard.notice.dto.SearchType;
 import notiboard.notice.dto.UploadFileDto;
-import org.springframework.data.domain.Page;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,26 +36,23 @@ public class NoticeService {
   private final PolicyChecker policyChecker;
 
   @Transactional
+  @CacheEvict(value = "notices", allEntries = true, cacheManager = "noticeCacheManager")
   public Long create(Request request) {
     Notice notice = noticeRepository.save(Notice.of(request));
     saveAttachments(notice, request.getAttachments());
     return notice.getId();
   }
 
-  private List<Attachment> saveAttachments(Notice notice, List<MultipartFile> uploadFiles) {
-    List<UploadFileDto> uploadFileDtoList = uploadFiles.stream()
-        .map(UploadFileDto::new)
-        .toList();
-    return attachmentService.saveFiles(uploadFileDtoList, notice);
-  }
-
-  @Transactional
+  @Cacheable(value = "notice", key = "#id", cacheManager = "noticeCacheManager")
   public Response findById(Long id) {
     Notice notice = findByIdFetchOrElseThrow(id);
-    notice.increaseViewCnt();
     return new Response(notice);
   }
 
+  @Caching(evict = {
+      @CacheEvict(value = "notice", key = "#id", cacheManager = "noticeCacheManager"),
+      @CacheEvict(value = "notices", allEntries = true, cacheManager = "noticeCacheManager")
+  })
   @Transactional
   public void deleteById(Long id) {
     requiredSameAuthorWithLoggedIn(id);
@@ -61,11 +61,16 @@ public class NoticeService {
     noticeRepository.deleteById(id);
   }
 
-  public Page<Response> search(SearchType searchType, String keyword, LocalDateTime from,
+  @Cacheable(value = "notices", cacheManager = "noticeCacheManager")
+  public PageDto<Response> search(SearchType searchType, String keyword, LocalDateTime from,
       LocalDateTime to, Pageable pageable) {
-    return noticeRepository.search(searchType, keyword, from, to, pageable);
+    return new PageDto<>(noticeRepository.search(searchType, keyword, from, to, pageable));
   }
 
+  @Caching(evict = {
+      @CacheEvict(value = "notice", key = "#id", cacheManager = "noticeCacheManager"),
+      @CacheEvict(value = "notices", allEntries = true, cacheManager = "noticeCacheManager")
+  })
   @Transactional
   public Response modify(Long id, Request request) {
     requiredSameAuthorWithLoggedIn(id);
@@ -81,6 +86,10 @@ public class NoticeService {
         .orElseThrow(() -> new CustomException(NOT_FOUND_NOTICE));
   }
 
+  @Transactional
+  public Long increaseViewCnt(Long id) {
+    return findByIdFetchOrElseThrow(id).increaseViewCnt();
+  }
 
   private void requiredSameAuthorWithLoggedIn(Long noticeId) {
     findByIdFetchOrElseThrow(noticeId);
@@ -90,4 +99,10 @@ public class NoticeService {
     throw new CustomException(ErrorCode.FORBIDDEN_NOT_ALLOWED);
   }
 
+  private List<Attachment> saveAttachments(Notice notice, List<MultipartFile> uploadFiles) {
+    List<UploadFileDto> uploadFileDtoList = uploadFiles.stream()
+        .map(UploadFileDto::new)
+        .toList();
+    return attachmentService.saveFiles(uploadFileDtoList, notice);
+  }
 }

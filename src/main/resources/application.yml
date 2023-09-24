@@ -23,7 +23,10 @@ spring:
         show_sql: false
         format_sql: true
         use_sql_comments: true
-
+  data:
+    redis:
+      host: localhost
+      port: 6379
 app:
   jwt:
     secret-key: Q0FEVVI2MlJwTndtZ3FMRllhWUVmTUFCbmlyTjduSHU0S3pnazlGMzdCeVZLOGhwbldEUVpjZjNialZxUTV6TXdGbUFrN1M5aUEzZFlxU0JiclZnTUhremJnenVOSkN1M1R5NQ==
@@ -33,4 +36,4 @@ app:
     secret-key: minioadmin
     bucket: notiboard
   # LOCAL, MINIO
-  fileStorageProvider: MINO
+  fileStorageProvider: MINIO

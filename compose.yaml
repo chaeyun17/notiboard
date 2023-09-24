@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    image: mysql:latest
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
@@ -11,7 +11,7 @@ services:
     ports:
       - 33306:3306
   minio:
-    image: 'minio/minio:latest'
+    image: minio/minio:latest
     volumes:
       - ./minio/:/data
     command: server /data --console-address ":9001"
@@ -24,3 +24,13 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"
+  redis:
+    image: redis:alpine
+    command: redis-server --port 6379
+    container_name: redis_boot
+    hostname: redis_boot
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 6379:6379
