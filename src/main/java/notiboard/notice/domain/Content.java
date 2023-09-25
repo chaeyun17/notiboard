@@ -30,7 +30,7 @@ public class Content {
     return new Content(content);
   }
 
-  public static void validate(String input) {
+  private static void validate(String input) {
     if (StringUtils.isBlank(input)) {
       throw new CustomException(INVALID_INPUT_CONTENT);
     }

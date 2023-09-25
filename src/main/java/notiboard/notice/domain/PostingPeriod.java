@@ -32,7 +32,7 @@ public class PostingPeriod {
     return new PostingPeriod(openingTime, closingTime);
   }
 
-  public static void validate(LocalDateTime openingTime, LocalDateTime closingTime) {
+  private static void validate(LocalDateTime openingTime, LocalDateTime closingTime) {
     if (Objects.isNull(openingTime) || Objects.isNull(closingTime)) {
       throw new CustomException(INVALID_INPUT_POSTING_PERIOD_IS_NULL);
     }

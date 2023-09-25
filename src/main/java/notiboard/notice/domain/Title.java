@@ -27,8 +27,8 @@ public class Title {
     return new Title(title);
   }
 
-  public static void validate(String input) {
-    if (StringUtils.isBlank(input) || input.length() > 100) {
+  private static void validate(String input) {
+    if (StringUtils.isBlank(input) || input.length() > MAX_LENGTH) {
       throw new CustomException(INVALID_INPUT_TITLE);
     }
   }
