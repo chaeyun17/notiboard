@@ -24,6 +24,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,7 +53,7 @@ public class NoticeService {
     return notice.getId();
   }
 
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Response findById(Long id) {
     NoticeDto.Response notice = noticeContentService.findById(id);
     long viewCount = postStatsService.increaseViewCnt(notice.getPostStats().getId());

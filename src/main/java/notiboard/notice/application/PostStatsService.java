@@ -2,7 +2,6 @@ package notiboard.notice.application;
 
 import lombok.RequiredArgsConstructor;
 import notiboard.notice.dao.PostStatsRepository;
-import notiboard.notice.domain.PostStats;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +14,8 @@ public class PostStatsService {
 
   @Transactional
   public long increaseViewCnt(Long postStatsId) {
-    PostStats postStats = postStatsRepository.findById(postStatsId).orElseThrow();
-    return postStats.increaseViewCount();
+    postStatsRepository.increaseViewCount(postStatsId);
+    return postStatsRepository.findById(postStatsId).orElseThrow().getViewCount();
   }
 
 }
