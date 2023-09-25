@@ -22,11 +22,13 @@ import notiboard.notice.fixture.NoticeRequestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 @DisplayName("공지사항 인수테스트")
 public class NoticeAcceptanceTest extends AcceptanceTest {
 
   private TokenDto.Response 토큰;
+  private LocalDateTime now;
 
   @BeforeEach
   void setup() {
@@ -34,6 +36,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
     MemberDto.Request 채윤_가입_요청 = new Request("chaeyun2", "admin123", "채윤2");
     MemberAcceptStep.회원가입(채윤_가입_요청);
     토큰 = MemberAcceptStep.토큰_발급(채윤_가입_요청);
+    now = LocalDateTime.of(2023, 9, 26, 10, 0, 0);
+    Mockito.when(timeUtils.now()).thenReturn(now);
   }
 
   @Test
@@ -42,8 +46,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
     // given
     String title = "추석을 맞아하여 임직원분들께";
     String content = "안녕하세요 기업 임직원 여러분! 따뜻한 마음을 주고 받는 한가위 되시길 바랍니다.";
-    LocalDateTime openingTime = LocalDateTime.of(2023, 9, 27, 9, 0, 0);
-    LocalDateTime closingTime = LocalDateTime.of(2023, 10, 2, 23, 59, 59);
+    LocalDateTime openingTime = now.minusDays(1);
+    LocalDateTime closingTime = now.plusDays(3);
     String 공지사항_생성_요청_첨부파일 = "one.txt";
     NoticeDto.Request 공지사항_데이터 = new NoticeDto.Request(title, content, openingTime,
         closingTime, null, null);

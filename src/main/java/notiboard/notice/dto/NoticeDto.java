@@ -33,14 +33,23 @@ public class NoticeDto implements Serializable {
     @NotNull(message = "제목은 필수 입력입니다.")
     @Size(min = 1, max = 100, message = "제목은 100자 이하여야 합니다.")
     private String title;
+
     @NotNull(message = "내용은 필수 입력입니다.")
     private String content;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @NotNull(message = "시작일시는 필수 입력입니다.")
     private LocalDateTime openingTime;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @NotNull(message = "종료일시는 필수 입력입니다.")
     private LocalDateTime closingTime;
+
     @JsonInclude(Include.NON_NULL)
     private List<MultipartFile> attachments = new ArrayList<>();
+
     @JsonInclude(Include.NON_NULL)
     private List<Long> deleteAttachmentIds = new ArrayList<>();
 

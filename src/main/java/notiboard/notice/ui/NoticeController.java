@@ -2,14 +2,12 @@ package notiboard.notice.ui;
 
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import notiboard.notice.application.NoticeService;
 import notiboard.notice.dto.NoticeDto;
 import notiboard.notice.dto.NoticeDto.Response;
 import notiboard.notice.dto.PageDto;
-import notiboard.notice.dto.SearchType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,15 +33,10 @@ public class NoticeController {
   @PreAuthorize("@policyChecker.permitAnonymous()")
   @GetMapping("")
   public ResponseEntity<PageDto<NoticeDto.Response>> search(
-      @RequestParam(required = false, defaultValue = "TITLE") SearchType searchType,
-      @RequestParam(required = false, defaultValue = "") String keyword,
-      @RequestParam(required = false) LocalDateTime from,
-      @RequestParam(required = false) LocalDateTime to,
       @PageableDefault(size = 100, sort = "createdAt", direction = Direction.DESC)
       Pageable pageable
   ) {
-    PageDto<Response> notices = noticeService.search(searchType, keyword, from, to,
-        pageable);
+    PageDto<Response> notices = noticeService.search(pageable);
     return ResponseEntity.ok(notices);
   }
 
@@ -54,7 +46,6 @@ public class NoticeController {
     NoticeDto.Response response = noticeService.findById(id);
     return ResponseEntity.ok(response);
   }
-
 
   @PreAuthorize("@policyChecker.requiredLogin()")
   @PostMapping(value = "")

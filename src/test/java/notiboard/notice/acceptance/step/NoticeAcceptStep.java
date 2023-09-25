@@ -49,8 +49,10 @@ public class NoticeAcceptStep {
     assertThat(응답_데이터.getId()).isEqualTo(공지사항_식별자);
     assertThat(응답_데이터.getTitle()).isEqualTo(공지사항_생성_요청_데이터.getJsonBody().getTitle());
     assertThat(응답_데이터.getContent()).isEqualTo(공지사항_생성_요청_데이터.getJsonBody().getContent());
-    assertThat(응답_데이터.getOpeningTime()).isEqualTo(공지사항_생성_요청_데이터.getJsonBody().getOpeningTime());
-    assertThat(응답_데이터.getClosingTime()).isEqualTo(공지사항_생성_요청_데이터.getJsonBody().getClosingTime());
+    assertThat(응답_데이터.getOpeningTime()).isEqualToIgnoringNanos(
+        공지사항_생성_요청_데이터.getJsonBody().getOpeningTime());
+    assertThat(응답_데이터.getClosingTime()).isEqualToIgnoringNanos(
+        공지사항_생성_요청_데이터.getJsonBody().getClosingTime());
     assertThat(hasAnyAttachment(응답_데이터.getAttachments(), 공지사항_생성_요청_데이터.getFileName())).isTrue();
     return 응답_데이터;
   }

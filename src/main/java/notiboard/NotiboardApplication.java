@@ -4,7 +4,6 @@ import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import notiboard.notice.application.NoticeService;
 import org.jobrunr.scheduling.JobScheduler;
-import org.jobrunr.scheduling.cron.Cron;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +27,5 @@ public class NotiboardApplication implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) throws Exception {
     jobScheduler.scheduleRecurrently(Duration.ofSeconds(30), noticeService::clearNoticesCache);
-    jobScheduler.scheduleRecurrently(Cron.daily(), noticeService::closeNotices);
   }
 }

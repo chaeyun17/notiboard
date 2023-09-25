@@ -1,6 +1,5 @@
 package notiboard.notice.application;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import notiboard.notice.dto.NoticeDto;
 import notiboard.notice.dto.NoticeDto.Request;
 import notiboard.notice.dto.NoticeDto.Response;
 import notiboard.notice.dto.PageDto;
-import notiboard.notice.dto.SearchType;
 import notiboard.notice.dto.UploadFileDto;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -73,9 +71,8 @@ public class NoticeService {
   }
 
   @Cacheable(value = CACHE_NOTICES, cacheManager = NOTICE_CACHE_MANAGER)
-  public PageDto<Response> search(SearchType searchType, String keyword, LocalDateTime from,
-      LocalDateTime to, Pageable pageable) {
-    Page<Response> notices = noticeRepository.search(searchType, keyword, from, to, pageable);
+  public PageDto<Response> search(Pageable pageable) {
+    Page<Response> notices = noticeRepository.search(pageable);
     return new PageDto<>(notices);
   }
 
@@ -118,14 +115,7 @@ public class NoticeService {
       return;
     }
     cache.clear();
-    log.info("Clear notices cache");
+    log.trace("Clear notices cache");
   }
 
-  @Transactional
-  public void closeNotices() {
-    LocalDateTime now = LocalDateTime.now();
-    List<Notice> notices = noticeRepository.findAllByPostingPeriodClosingTimeIsBefore(now);
-    noticeRepository.deleteAll(notices);
-    log.info("Close notices. size: {}", notices.size());
-  }
 }
