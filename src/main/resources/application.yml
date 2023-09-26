@@ -1,7 +1,7 @@
 spring:
   mvc:
-  pathmatch:
-    matching-strategy: ant_path_matcher
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33306/notiboard
@@ -30,10 +30,6 @@ spring:
       port: 6379
   batch.jdbc:
     initialize-schema: always
-
-org.jobrunr:
-  background-job-server.enabled: true
-  dashboard.enabled: false
 
 app:
   jwt:
