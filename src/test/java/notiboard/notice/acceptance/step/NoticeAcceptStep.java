@@ -27,7 +27,7 @@ public class NoticeAcceptStep {
     return RestAssuredUtils.postWithFiles(공지사항_리소스_주소,
         토큰.getAccessToken(),
         "notice",
-        생성_요청_데이터.getJsonBody(), "attachments", 생성_요청_데이터.getFileName());
+        생성_요청_데이터.getJsonBody(), "attachments", 생성_요청_데이터.getFileNames());
   }
 
   public static Long 공지사항_생성_응답_확인(
@@ -53,7 +53,7 @@ public class NoticeAcceptStep {
         공지사항_생성_요청_데이터.getJsonBody().getOpeningTime());
     assertThat(응답_데이터.getClosingTime()).isEqualToIgnoringNanos(
         공지사항_생성_요청_데이터.getJsonBody().getClosingTime());
-    assertThat(hasAnyAttachment(응답_데이터.getAttachments(), 공지사항_생성_요청_데이터.getFileName())).isTrue();
+    assertThat(hasAnyAttachment(응답_데이터.getAttachments(), 공지사항_생성_요청_데이터.getFileNames())).isTrue();
     return 응답_데이터;
   }
 
@@ -63,7 +63,7 @@ public class NoticeAcceptStep {
     return RestAssuredUtils.putWithFiles(공지사항_리소스_주소 + "/" + 생성_수정_요청_식별자,
         토큰.getAccessToken(),
         "notice",
-        생성_수정_데이터.getJsonBody(), "attachments", 생성_수정_데이터.getFileName());
+        생성_수정_데이터.getJsonBody(), "attachments", 생성_수정_데이터.getFileNames());
   }
 
 
@@ -79,7 +79,7 @@ public class NoticeAcceptStep {
     assertThat(응답_데이터.getContent()).isEqualTo(공지사항_수정_요청_데이터.getJsonBody().getContent());
     assertThat(응답_데이터.getOpeningTime()).isEqualTo(공지사항_수정_요청_데이터.getJsonBody().getOpeningTime());
     assertThat(응답_데이터.getClosingTime()).isEqualTo(공지사항_수정_요청_데이터.getJsonBody().getClosingTime());
-    assertThat(hasAnyAttachment(응답_데이터.getAttachments(), 공지사항_수정_요청_데이터.getFileName())).isTrue();
+    assertThat(hasAnyAttachment(응답_데이터.getAttachments(), 공지사항_수정_요청_데이터.getFileNames())).isTrue();
 
     return 응답_데이터;
   }
@@ -89,8 +89,9 @@ public class NoticeAcceptStep {
   }
 
   private static boolean hasAnyAttachment(List<AttachmentDto.Response> attachments,
-      String fileName) {
-    return attachments.stream().anyMatch(attachment -> attachment.getFileName().equals(fileName));
+      List<String> fileNames) {
+    return attachments.stream()
+        .anyMatch(attachment -> fileNames.contains(attachment.getFileName()));
   }
 
   public static void 공지사항_검색_응답_확인(ExtractableResponse<Response> 공지사항_검색_응답,

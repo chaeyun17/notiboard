@@ -1,16 +1,17 @@
 package notiboard.notice.fixture;
 
+import java.util.List;
 import notiboard.notice.dto.NoticeDto;
 import notiboard.notice.dto.NoticeDto.Request;
 
 public class NoticeRequestFixture {
 
   private NoticeDto.Request jsonBody;
-  private String fileName;
+  private List<String> fileNames;
 
-  public NoticeRequestFixture(Request jsonBody, String fileName) {
+  public NoticeRequestFixture(Request jsonBody, List<String> fileNames) {
     this.jsonBody = jsonBody;
-    this.fileName = fileName;
+    this.fileNames = fileNames;
   }
 
   public Request getJsonBody() {
@@ -21,12 +22,12 @@ public class NoticeRequestFixture {
     this.jsonBody = jsonBody;
   }
 
-  public String getFileName() {
-    return fileName;
+  public List<String> getFileNames() {
+    return fileNames;
   }
 
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
+  public void setFileNames(List<String> fileNames) {
+    this.fileNames = fileNames;
   }
 
 }

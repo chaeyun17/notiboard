@@ -11,6 +11,7 @@ import static notiboard.notice.acceptance.step.NoticeAcceptStep.공지사항_수
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
+import java.util.List;
 import notiboard.AcceptanceTest;
 import notiboard.member.acceptance.step.MemberAcceptStep;
 import notiboard.member.dto.MemberDto;
@@ -49,9 +50,11 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
     LocalDateTime openingTime = now.minusDays(1);
     LocalDateTime closingTime = now.plusDays(3);
     String 공지사항_생성_요청_첨부파일 = "one.txt";
+    String 공지사항_생성_요청_첨부파일2 = "two.txt";
     NoticeDto.Request 공지사항_데이터 = new NoticeDto.Request(title, content, openingTime,
         closingTime, null, null);
-    NoticeRequestFixture 공지사항_생성_요청_데이터 = new NoticeRequestFixture(공지사항_데이터, 공지사항_생성_요청_첨부파일);
+    NoticeRequestFixture 공지사항_생성_요청_데이터 = new NoticeRequestFixture(공지사항_데이터,
+        List.of(공지사항_생성_요청_첨부파일, 공지사항_생성_요청_첨부파일2));
 
     // 공지사항 생성
     ExtractableResponse<Response> 공지사항_생성_응답 = 공지사항_생성_요청(공지사항_생성_요청_데이터, 토큰);
@@ -72,7 +75,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         null
     );
     String 공지사항_수정_요청_첨부파일 = "two.txt";
-    NoticeRequestFixture 공지사항_수정_요청_데이터 = new NoticeRequestFixture(공지사항_수정_데이터, 공지사항_수정_요청_첨부파일);
+    NoticeRequestFixture 공지사항_수정_요청_데이터 = new NoticeRequestFixture(공지사항_수정_데이터,
+        List.of(공지사항_수정_요청_첨부파일));
     ExtractableResponse<Response> 공지사항_수정_응답 = 공지사항_수정_요청(공지사항_식별자,
         공지사항_수정_요청_데이터, 토큰);
     NoticeDto.Response 공지사항_수정_응답_데이터 = 공지사항_수정_응답_확인(공지사항_수정_응답, 공지사항_수정_요청_데이터,

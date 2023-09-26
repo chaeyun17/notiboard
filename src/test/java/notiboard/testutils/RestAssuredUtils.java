@@ -5,8 +5,10 @@ import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.config.DecoderConfig;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.util.ResourceUtils;
 
@@ -41,12 +43,18 @@ public class RestAssuredUtils {
   public static <T> ExtractableResponse<Response> postWithFiles(String path, String token,
       String jsonPartName,
       T requestBody,
-      String filePartName, String filePath) {
-    return RestAssured.given()
+      String filePartName, List<String> filePaths) {
+
+    RequestSpecification when = RestAssured.given()
         .header("Authorization", "Bearer " + token)
         .log().all()
-        .when()
-        .multiPart(filePartName, loadFile(filePath))
+        .when();
+
+    for (String filePath : filePaths) {
+      when.multiPart(filePartName, loadFile(filePath));
+    }
+
+    return when
         .multiPart(
             new MultiPartSpecBuilder(requestBody).controlName(jsonPartName)
                 .emptyFileName()
@@ -60,20 +68,23 @@ public class RestAssuredUtils {
   public static <T> ExtractableResponse<Response> putWithFiles(String path, String token,
       String jsonPartName,
       T requestBody,
-      String filePartName, String filePath) {
-    return RestAssured.given()
+      String filePartName, List<String> filePaths) {
+    RequestSpecification when = RestAssured.given()
         .config(RestAssured.config()
             .decoderConfig(DecoderConfig.decoderConfig().defaultContentCharset("UTF-8")))
         .header("Authorization", "Bearer " + token)
         .log().all()
-        .when()
-        .multiPart(filePartName, loadFile(filePath))
+        .when();
+    for (String filePath : filePaths) {
+      when.multiPart(filePartName, loadFile(filePath));
+    }
+
+    return when
         .multiPart(
             new MultiPartSpecBuilder(requestBody).controlName(jsonPartName)
                 .emptyFileName()
                 .mimeType("application/json")
                 .charset("UTF-8")
-                .mimeType("application/json")
                 .build())
         .put(path)
         .then().log().all().extract();
