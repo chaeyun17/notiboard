@@ -37,6 +37,7 @@ public class NoticeRepoCustomImpl extends QuerydslRepositorySupport implements N
     QBean<Response> projection = Projections.fields(Response.class,
         notice.id,
         notice.title.title,
+        notice.content.content,
         notice.postingPeriod.openingTime,
         notice.createdAt,
         PostStatsProjection.projection(notice.postStats).as("postStats"),
