@@ -3,18 +3,9 @@
 ### 실행 사전 준비
 
 - Docker Desktop
-- gradle 8
-- java 17
 
 ```shell
 $ brew install --cask docker
-
-# The Multiple Runtime Version Manager: ASDF
-# Java 와 Gradle을 ASDF 도구를 통해 설치합니다
-$ brew install asdf
-$ asdf plugin-add gradle https://github.com/rfrancis/asdf-gradle.git
-$ asdf plugin-add java https://github.com/halcyon/asdf-java.git
-$ asdf install
 ```
 
 ### 서버 실행
@@ -29,13 +20,36 @@ $ ./gradlew bootRun
 $ ./gradlew test
 ```
 
+### API 호출 테스트
+
+```
+/rest/auth/signup.http
+/rest/auth/get_token.http
+/rest/notice/create.http
+/rest/notice/delete-by-id.http
+/rest/notice/get-by-id.http
+/rest/notice/modify.http
+/rest/notice/search.http
+```
+
+## 개발환경 세팅
+
+```mermaid
+# The Multiple Runtime Version Manager: ASDF
+# Java 와 Gradle을 ASDF 도구를 통해 설치합니다. .tool-version 파일을 읽어서 세팅됩니다.
+$ brew install asdf
+$ asdf plugin-add gradle https://github.com/rfrancis/asdf-gradle.git
+$ asdf plugin-add java https://github.com/halcyon/asdf-java.git
+$ asdf install
+```
+
 ## 기술 목록
 
 - Language: **Java 17**
 - Frameworks: **Spring Boot 3, Hibernate**
 - Build Tool: **Gradle 8**
 - DB: **MySQL, Redis**
-- Test Tools: **Rest assured, JUnit 5, AssertJ, TestContainers(MySQL)**
+- Test Tools: **Rest assured, JUnit 5, AssertJ**
 - VCS: **Git, Github**
 
 ## 코드 스타일 컨벤션
