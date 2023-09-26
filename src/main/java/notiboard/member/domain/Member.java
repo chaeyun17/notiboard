@@ -58,6 +58,10 @@ public class Member extends AuditEntity implements UserDetails {
         Nickname.of(request.getNickname()));
   }
 
+  public static Member of(Username username, Password password, Nickname nickname) {
+    return new Member(username, password, nickname);
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return new ArrayList<>();

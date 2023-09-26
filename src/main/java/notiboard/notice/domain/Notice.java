@@ -82,6 +82,19 @@ public class Notice extends AuditEntity {
         PostingPeriod.of(request.getOpeningTime(), request.getClosingTime()), PostStats.of());
   }
 
+  public static Notice of(Title title, Content content, PostingPeriod postingPeriod,
+      PostStats postStats, Member createdBy) {
+    Notice notice = new Notice(title, content, postingPeriod, postStats);
+    notice.createdBy = createdBy;
+    return notice;
+  }
+
+  public static Notice of(long id) {
+    Notice notice = new Notice();
+    notice.id = id;
+    return notice;
+  }
+
   @Override
   public final boolean equals(Object o) {
     if (this == o) {

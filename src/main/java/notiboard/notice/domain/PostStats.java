@@ -38,6 +38,10 @@ public class PostStats {
     return new PostStats(0L);
   }
 
+  public static PostStats of(Long viewCount) {
+    return new PostStats(viewCount);
+  }
+
   public long increaseViewCount() {
     this.viewCount += 1;
     return this.viewCount;

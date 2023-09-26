@@ -25,6 +25,10 @@ public class Password {
     return new Password(passwordEncoder.encode(raw));
   }
 
+  public static Password of(String encrypted) {
+    return new Password(encrypted);
+  }
+
   private static void validate(String raw) {
     if (StringUtils.isBlank(raw) || raw.length() < MIN_LENGTH || raw.length() > MAX_LENGTH) {
       throw new CustomException(INVALID_INPUT_PASSWORD_SIZE);

@@ -2,10 +2,14 @@ package notiboard.notice.dto;
 
 import java.io.IOException;
 import java.io.InputStream;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UploadFileDto {
 
   private String originalFileName;
