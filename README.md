@@ -23,12 +23,25 @@ $ ./gradlew test
 ### API 호출 테스트
 
 ```
+1. 회원가입
 /rest/auth/signup.http
+
+2. 가입정보로 토큰 발급 
 /rest/auth/get_token.http
+
+3. 공지사항 생성
 /rest/notice/create.http
-/rest/notice/delete-by-id.http
+
+4. 공지사항 상세조회 - 조회수 상승
 /rest/notice/get-by-id.http
+
+5. 공지사항 수정 
 /rest/notice/modify.http
+
+6. 공지사항 삭제
+/rest/notice/delete-by-id.http
+
+7. 공지사항 검색
 /rest/notice/search.http
 ```
 
