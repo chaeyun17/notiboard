@@ -19,6 +19,7 @@ public class AppProperties {
     private String accessKey;
     private String secretKey;
     private String bucket;
+    private String endpoint;
   }
 
   @Data

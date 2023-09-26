@@ -34,24 +34,26 @@ public class MinioConfig {
   private final String bucket;
   private final String accessKey;
   private final String secretKey;
+  private final String endpoint;
 
   @Autowired
   public MinioConfig(AppProperties appProperties) {
     this.bucket = appProperties.getMinio().getBucket();
     this.accessKey = appProperties.getMinio().getAccessKey();
     this.secretKey = appProperties.getMinio().getSecretKey();
+    this.endpoint = appProperties.getMinio().getEndpoint();
   }
 
   @Bean
   public MinioAsyncClient minioAsyncClient() {
     return new Builder().credentials(accessKey, secretKey)
-        .endpoint("http://localhost:9000").build();
+        .endpoint(endpoint).build();
   }
 
   @Bean
   public MinioClient minioClient() {
     MinioClient client = new MinioClient.Builder().credentials(accessKey, secretKey)
-        .endpoint("http://localhost:9000").build();
+        .endpoint(endpoint).build();
     try {
       boolean existsBucket = client.bucketExists(
           BucketExistsArgs.builder().bucket(bucket).build());

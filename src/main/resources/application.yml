@@ -36,6 +36,7 @@ app:
     secret-key: Q0FEVVI2MlJwTndtZ3FMRllhWUVmTUFCbmlyTjduSHU0S3pnazlGMzdCeVZLOGhwbldEUVpjZjNialZxUTV6TXdGbUFrN1M5aUEzZFlxU0JiclZnTUhremJnenVOSkN1M1R5NQ==
     expiration-ms: 3600000
   minio:
+    endpoint: http://localhost:9000
     access-key: minioadmin
     secret-key: minioadmin
     bucket: notiboard
