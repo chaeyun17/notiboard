@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-@DisplayName("제목 테스트")
+@DisplayName("[Domain] 제목 테스트")
 class TitleTest {
 
   @DisplayName("제목 길이는 비어있거나 100자를 초과하면 안된다")

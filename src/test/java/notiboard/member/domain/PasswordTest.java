@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@DisplayName("비밀번호 테스트")
+@DisplayName("[Domain] 비밀번호 테스트")
 class PasswordTest {
 
   private PasswordEncoder passwordEncoder;

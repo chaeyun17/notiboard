@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-@DisplayName("공지사항 기간 테스트")
+@DisplayName("[Domain] 공지사항 기간 테스트")
 class PostingPeriodTest {
 
   @ParameterizedTest

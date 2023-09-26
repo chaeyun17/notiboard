@@ -2,8 +2,6 @@ package notiboard.config.minio;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
-import io.minio.MinioAsyncClient;
-import io.minio.MinioAsyncClient.Builder;
 import io.minio.MinioClient;
 import io.minio.errors.ErrorResponseException;
 import io.minio.errors.InsufficientDataException;
@@ -42,12 +40,6 @@ public class MinioConfig {
     this.accessKey = appProperties.getMinio().getAccessKey();
     this.secretKey = appProperties.getMinio().getSecretKey();
     this.endpoint = appProperties.getMinio().getEndpoint();
-  }
-
-  @Bean
-  public MinioAsyncClient minioAsyncClient() {
-    return new Builder().credentials(accessKey, secretKey)
-        .endpoint(endpoint).build();
   }
 
   @Bean

@@ -14,7 +14,7 @@ import notiboard.member.dto.TokenDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("회원 인수테스트")
+@DisplayName("[Acceptance] 회원 인수테스트")
 public class MemberAcceptanceTest extends AcceptanceTest {
 
   @DisplayName("회원 토큰 발급 시나리오")

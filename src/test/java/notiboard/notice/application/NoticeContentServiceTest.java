@@ -16,12 +16,14 @@ import notiboard.notice.domain.PostingPeriod;
 import notiboard.notice.domain.Title;
 import notiboard.notice.dto.NoticeDto.Response;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+@DisplayName("[Service] 공지사항 콘텐츠 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
 class NoticeContentServiceTest {
 
@@ -34,6 +36,8 @@ class NoticeContentServiceTest {
     this.noticeContentService = new NoticeContentService(noticeRepository);
   }
 
+
+  @DisplayName("공지사항 콘텐츠 조회")
   @Test
   void findById() {
     Member member = Member.of(Username.of("abcdef"), Password.of("pw123"),
@@ -53,6 +57,7 @@ class NoticeContentServiceTest {
     assertThat(response.getClosingTime()).isEqualTo(notice.getPostingPeriod().getClosingTime());
   }
 
+  @DisplayName("공지사항 콘텐츠 조회2")
   @Test
   void findByIdFetchOrElseThrow() {
     Member member = Member.of(Username.of("abcdef"), Password.of("pw123"),

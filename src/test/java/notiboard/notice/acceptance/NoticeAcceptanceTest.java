@@ -25,7 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-@DisplayName("공지사항 인수테스트")
+@DisplayName("[Acceptance] 공지사항 인수테스트")
 public class NoticeAcceptanceTest extends AcceptanceTest {
 
   private TokenDto.Response 토큰;

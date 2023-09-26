@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 
-@DisplayName("본문 테스트")
+@DisplayName("[Domain] 본문 테스트")
 class ContentTest {
 
   @DisplayName("본문 길이는 비어있으면 안된다")

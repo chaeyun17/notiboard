@@ -3,13 +3,13 @@ package notiboard.member.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import notiboard.exception.NotiboardException;
 import notiboard.exception.ErrorCode;
+import notiboard.exception.NotiboardException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-@DisplayName("아이디 Username 테스트")
+@DisplayName("[Domain] 아이디 Username 테스트")
 class UsernameTest {
 
   @ParameterizedTest

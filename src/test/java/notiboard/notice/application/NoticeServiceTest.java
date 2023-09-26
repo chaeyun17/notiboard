@@ -23,6 +23,7 @@ import notiboard.notice.dto.NoticeDto.Request;
 import notiboard.notice.dto.NoticeDto.Response;
 import notiboard.notice.dto.PageDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -32,6 +33,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+@DisplayName("[Service] 공지사항 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
 class NoticeServiceTest {
 
@@ -56,6 +58,7 @@ class NoticeServiceTest {
         noticeContentService, postStatsService, cacheManager);
   }
 
+  @DisplayName("공지사항 생성")
   @Test
   void create() {
     Request request = new Request("제목123", "본문123", LocalDateTime.now(),
@@ -68,6 +71,7 @@ class NoticeServiceTest {
     assertThat(id).isEqualTo(expectedId);
   }
 
+  @DisplayName("공지사항 상세 조회")
   @Test
   void findById() {
     Long viewCount = 1L;
@@ -90,6 +94,7 @@ class NoticeServiceTest {
 
   }
 
+  @DisplayName("공지사항 삭제")
   @Test
   void deleteById() {
     long id = 1L;
@@ -105,6 +110,7 @@ class NoticeServiceTest {
     noticeService.deleteById(id);
   }
 
+  @DisplayName("공지사항 검색")
   @Test
   void search() {
     Long viewCount = 1L;
@@ -122,6 +128,7 @@ class NoticeServiceTest {
     assertThat(result.getSize()).isEqualTo(1L);
   }
 
+  @DisplayName("공지사항 수정")
   @Test
   void modify() {
     Request request = new Request("제목123", "본문123", LocalDateTime.now(),

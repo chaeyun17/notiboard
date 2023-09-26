@@ -14,18 +14,19 @@ import notiboard.notice.domain.UploadFile;
 import notiboard.notice.dto.UploadFileDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
+@DisplayName("[Service] MinIO 스토리지 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
 class MinioStorageServiceTest {
 
   private FileStorageService fileStorageService;
-  @Mock
-  private MinioFileStorageService minioFileStorageService;
   @Mock
   private MinioConfig minioConfig;
   @Mock
@@ -39,6 +40,7 @@ class MinioStorageServiceTest {
     this.fileStorageService = new MinioFileStorageService(minioClient, minioConfig);
   }
 
+  @DisplayName("파일 저장")
   @Test
   void saveFile() {
     String originalFileName = "abc.txt";
@@ -53,6 +55,7 @@ class MinioStorageServiceTest {
     Assertions.assertThat(uploadFile.getFilePath()).isNotBlank();
   }
 
+  @DisplayName("파일 데이터 읽기")
   @Test
   void getFileByStream() throws Exception {
     String originalFileName = "abc.txt";
@@ -65,6 +68,7 @@ class MinioStorageServiceTest {
     fileStorageService.getFileByStream(uploadFile, outputStream);
   }
 
+  @DisplayName("파일 삭제")
   @Test
   void delete() {
     String originalFileName = "abc.txt";
