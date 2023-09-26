@@ -38,11 +38,11 @@ $ ./gradlew test
 5. 공지사항 수정 
 /rest/notice/modify.http
 
-6. 공지사항 삭제
-/rest/notice/delete-by-id.http
-
-7. 공지사항 검색
+6. 공지사항 검색
 /rest/notice/search.http
+
+7. 공지사항 삭제
+/rest/notice/delete-by-id.http
 ```
 
 ## 개발환경 세팅

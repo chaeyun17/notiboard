@@ -32,8 +32,10 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
 
   @BeforeEach
   void setup() {
+    // 회원가입
     MemberDto.Request 채윤_가입_요청 = new Request("chaeyun2", "admin123", "채윤2");
     MemberAcceptStep.회원가입(채윤_가입_요청);
+    // 로그인 및 토큰 발급
     토큰 = MemberAcceptStep.토큰_발급(채윤_가입_요청);
     now = LocalDateTime.of(2023, 9, 26, 10, 0, 0);
     Mockito.when(timeUtils.now()).thenReturn(now);
