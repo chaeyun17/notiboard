@@ -3,7 +3,7 @@ package notiboard.member.application;
 import static notiboard.exception.ErrorCode.NOT_MATCH_CREDENTIAL;
 
 import lombok.RequiredArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.member.dto.TokenDto.Request;
 import notiboard.member.dto.TokenDto.Response;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,10 +27,10 @@ public class AuthService {
     try {
       userDetails = userDetailsService.loadUserByUsername(request.getUsername());
     } catch (UsernameNotFoundException ex) {
-      throw new CustomException(NOT_MATCH_CREDENTIAL);
+      throw new NotiboardException(NOT_MATCH_CREDENTIAL);
     }
     if (!passwordEncoder.matches(request.getPassword(), userDetails.getPassword())) {
-      throw new CustomException(NOT_MATCH_CREDENTIAL);
+      throw new NotiboardException(NOT_MATCH_CREDENTIAL);
     }
     return new Response(jwtUtils.generateJwtToken(userDetails.getUsername()));
   }

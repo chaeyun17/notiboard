@@ -2,7 +2,7 @@ package notiboard.notice.domain;
 
 import static notiboard.exception.ErrorCode.INVALID_INPUT_CONTENT;
 
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
@@ -14,10 +14,10 @@ class ContentTest {
   @RepeatedTest(5)
   void ofTest() {
     String content = "";
-    
+
     Assertions.assertThatThrownBy(() -> {
           Content.of(content);
-        }).isInstanceOf(CustomException.class)
+        }).isInstanceOf(NotiboardException.class)
         .hasMessage(INVALID_INPUT_CONTENT.message);
   }
 }

@@ -2,7 +2,7 @@ package notiboard.common.applicaiton;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.exception.ErrorCode;
 import notiboard.member.domain.Member;
 import org.springframework.security.core.Authentication;
@@ -31,7 +31,7 @@ public class PolicyChecker {
 
   public Long getLoggedUserId() {
     return getUserDetails().orElseThrow(
-            () -> new CustomException(ErrorCode.FORBIDDEN_NOT_LOGGED_MEMBER))
+            () -> new NotiboardException(ErrorCode.FORBIDDEN_NOT_LOGGED_MEMBER))
         .getId();
   }
 

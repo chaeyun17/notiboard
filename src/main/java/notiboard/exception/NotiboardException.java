@@ -7,26 +7,26 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
-public class CustomException extends RuntimeException {
+public class NotiboardException extends RuntimeException {
 
   private HttpStatus httpStatus;
   private String message;
   private String description;
 
-  public CustomException(HttpStatus httpStatus, String message, String descriptionPattern,
+  public NotiboardException(HttpStatus httpStatus, String message, String descriptionPattern,
       Object... descArgs) {
     this.httpStatus = httpStatus;
     this.message = message;
     this.description = ParameterizedMessage.format(descriptionPattern, descArgs);
   }
 
-  public CustomException(HttpStatus httpStatus, String message) {
+  public NotiboardException(HttpStatus httpStatus, String message) {
     this.httpStatus = httpStatus;
     this.message = message;
     this.description = "No Description";
   }
 
-  public CustomException(ErrorCode errorCode) {
+  public NotiboardException(ErrorCode errorCode) {
     this.httpStatus = errorCode.getStatusCode();
     this.message = errorCode.getMessage();
     this.description = "No Description";

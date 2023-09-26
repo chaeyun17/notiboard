@@ -4,7 +4,7 @@ import static notiboard.exception.ErrorCode.INVALID_INPUT_POSTING_PERIOD;
 import static notiboard.exception.ErrorCode.INVALID_INPUT_POSTING_PERIOD_IS_NULL;
 
 import java.time.LocalDateTime;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +19,7 @@ class PostingPeriodTest {
   void ofTest(LocalDateTime openingTime, LocalDateTime closingTime) {
     Assertions.assertThatThrownBy(() -> {
       PostingPeriod.of(openingTime, closingTime);
-    }).isInstanceOf(CustomException.class).hasMessage(INVALID_INPUT_POSTING_PERIOD.message);
+    }).isInstanceOf(NotiboardException.class).hasMessage(INVALID_INPUT_POSTING_PERIOD.message);
   }
 
   @ParameterizedTest
@@ -27,8 +27,9 @@ class PostingPeriodTest {
   @DisplayName("시작일시가 마감일시는 둘 중 하나라도 Null이면 안됩니다")
   void ofTest2(LocalDateTime openingTime, LocalDateTime closingTime) {
     Assertions.assertThatThrownBy(() -> {
-      PostingPeriod.of(openingTime, closingTime);
-    }).isInstanceOf(CustomException.class).hasMessage(INVALID_INPUT_POSTING_PERIOD_IS_NULL.message);
+          PostingPeriod.of(openingTime, closingTime);
+        }).isInstanceOf(NotiboardException.class)
+        .hasMessage(INVALID_INPUT_POSTING_PERIOD_IS_NULL.message);
   }
 
 }

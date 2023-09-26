@@ -5,7 +5,7 @@ import static notiboard.notice.application.NoticeService.NOTICE_CACHE_MANAGER;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.notice.dao.NoticeRepository;
 import notiboard.notice.domain.Notice;
 import notiboard.notice.dto.NoticeDto.Response;
@@ -29,7 +29,7 @@ public class NoticeContentService {
 
   public Notice findByIdFetchOrElseThrow(Long id) {
     return noticeRepository.findByIdFetch(id)
-        .orElseThrow(() -> new CustomException(NOT_FOUND_NOTICE));
+        .orElseThrow(() -> new NotiboardException(NOT_FOUND_NOTICE));
   }
 
 }

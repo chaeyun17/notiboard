@@ -2,7 +2,7 @@ package notiboard.notice.domain;
 
 import static notiboard.exception.ErrorCode.INVALID_INPUT_TITLE;
 
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,7 +20,7 @@ class TitleTest {
   void ofTest(String input) {
     Assertions.assertThatThrownBy(() -> {
           Title.of(input);
-        }).isInstanceOf(CustomException.class)
+        }).isInstanceOf(NotiboardException.class)
         .hasMessage(INVALID_INPUT_TITLE.message);
   }
 }

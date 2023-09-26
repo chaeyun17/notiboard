@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.apache.commons.lang3.StringUtils;
 
 @Embeddable
@@ -29,7 +29,7 @@ public class Title {
 
   private static void validate(String input) {
     if (StringUtils.isBlank(input) || input.length() > MAX_LENGTH) {
-      throw new CustomException(INVALID_INPUT_TITLE);
+      throw new NotiboardException(INVALID_INPUT_TITLE);
     }
   }
 

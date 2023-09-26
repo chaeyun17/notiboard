@@ -4,7 +4,7 @@ import static notiboard.exception.ErrorCode.INVALID_INPUT_PASSWORD_SIZE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,7 +38,7 @@ class PasswordTest {
   public void ofTest1(String input) {
     assertThatThrownBy(() -> {
       Password.ofEncrpyt(input, passwordEncoder);
-    }).isInstanceOf(CustomException.class)
+    }).isInstanceOf(NotiboardException.class)
         .hasMessage(INVALID_INPUT_PASSWORD_SIZE.message);
   }
 

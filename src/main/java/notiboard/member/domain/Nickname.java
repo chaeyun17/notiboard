@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.apache.commons.lang3.StringUtils;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,7 +26,7 @@ public class Nickname {
 
   private static void validate(String input) {
     if (StringUtils.isBlank(input) || input.length() < MIN_LENGTH || input.length() > MAX_LENGTH) {
-      throw new CustomException(INVALID_INPUT_NICKNAME_SIZE);
+      throw new NotiboardException(INVALID_INPUT_NICKNAME_SIZE);
     }
   }
 

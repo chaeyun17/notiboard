@@ -3,7 +3,7 @@ package notiboard.exception.ui;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.springframework.http.HttpStatus;
 
 @Data
@@ -22,7 +22,7 @@ public class CustomExceptionResponse {
     this.description = description;
   }
 
-  public CustomExceptionResponse(CustomException exception) {
+  public CustomExceptionResponse(NotiboardException exception) {
     this.timestamp = LocalDateTime.now();
     this.httpStatus = exception.getHttpStatus();
     this.message = exception.getMessage();

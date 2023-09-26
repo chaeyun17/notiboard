@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.notice.dao.AttachmentRepository;
 import notiboard.notice.domain.Attachment;
 import notiboard.notice.domain.Notice;
@@ -43,10 +43,10 @@ public class AttachmentService {
 
   private void validateFile(UploadFileDto dto) {
     if (dto.getFileSize() > MAX_FILE_SIZE) {
-      throw new CustomException(INVALID_INPUT_UPLOAD_FILE_TOO_LARGE);
+      throw new NotiboardException(INVALID_INPUT_UPLOAD_FILE_TOO_LARGE);
     }
     if (dto.getFileSize() == 0) {
-      throw new CustomException(INVALID_INPUT_UPLOAD_FILE_TOO_SMALL);
+      throw new NotiboardException(INVALID_INPUT_UPLOAD_FILE_TOO_SMALL);
     }
   }
 
@@ -70,7 +70,7 @@ public class AttachmentService {
 
   private void deleteById(Long id) {
     Attachment attachment = attachmentRepository.findById(id)
-        .orElseThrow(() -> new CustomException(NOT_FOUND_ATTACHMENT));
+        .orElseThrow(() -> new NotiboardException(NOT_FOUND_ATTACHMENT));
     fileStorageService.delete(attachment.getUploadFile());
     attachment.delete();
     attachmentRepository.delete(attachment);

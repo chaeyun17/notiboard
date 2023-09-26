@@ -3,7 +3,7 @@ package notiboard.member.application;
 import static notiboard.exception.ErrorCode.DUPLICATE_MEMBER_USERNAME;
 
 import lombok.RequiredArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.member.dao.MemberRepository;
 import notiboard.member.domain.Member;
 import notiboard.member.domain.Username;
@@ -29,7 +29,7 @@ public class MemberService {
 
   public void validate(Request request) {
     if (memberRepository.existsByUsername(Username.of(request.getUsername()))) {
-      throw new CustomException(DUPLICATE_MEMBER_USERNAME);
+      throw new NotiboardException(DUPLICATE_MEMBER_USERNAME);
     }
   }
 }

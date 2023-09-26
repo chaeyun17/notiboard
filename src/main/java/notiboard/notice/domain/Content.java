@@ -9,7 +9,7 @@ import jakarta.persistence.Lob;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.apache.commons.lang3.StringUtils;
 
 @Embeddable
@@ -32,7 +32,7 @@ public class Content {
 
   private static void validate(String input) {
     if (StringUtils.isBlank(input)) {
-      throw new CustomException(INVALID_INPUT_CONTENT);
+      throw new NotiboardException(INVALID_INPUT_CONTENT);
     }
   }
 

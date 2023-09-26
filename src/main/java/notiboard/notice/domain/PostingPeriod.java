@@ -10,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 
 @Getter
 @Embeddable
@@ -34,10 +34,10 @@ public class PostingPeriod {
 
   private static void validate(LocalDateTime openingTime, LocalDateTime closingTime) {
     if (Objects.isNull(openingTime) || Objects.isNull(closingTime)) {
-      throw new CustomException(INVALID_INPUT_POSTING_PERIOD_IS_NULL);
+      throw new NotiboardException(INVALID_INPUT_POSTING_PERIOD_IS_NULL);
     }
     if (openingTime.isAfter(closingTime) || openingTime.isEqual(closingTime)) {
-      throw new CustomException(INVALID_INPUT_POSTING_PERIOD);
+      throw new NotiboardException(INVALID_INPUT_POSTING_PERIOD);
     }
   }
 

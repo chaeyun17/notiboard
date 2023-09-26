@@ -4,7 +4,7 @@ import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.exception.ErrorCode;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,7 +26,7 @@ public class Username {
 
   private static void validate(String input) {
     if (StringUtils.isBlank(input) || input.length() < MIN_LENGTH || input.length() > MAX_LENGTH) {
-      throw new CustomException(ErrorCode.INVALID_INPUT_USERNAME_SIZE);
+      throw new NotiboardException(ErrorCode.INVALID_INPUT_USERNAME_SIZE);
     }
   }
 

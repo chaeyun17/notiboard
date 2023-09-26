@@ -3,7 +3,7 @@ package notiboard.member.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +19,7 @@ class UsernameTest {
   void ofTest1(String input) {
     assertThatThrownBy(() -> {
       Username.of(input);
-    }).isInstanceOf(CustomException.class)
+    }).isInstanceOf(NotiboardException.class)
         .hasMessage(ErrorCode.INVALID_INPUT_USERNAME_SIZE.message);
   }
 

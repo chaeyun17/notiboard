@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import notiboard.common.applicaiton.PolicyChecker;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import notiboard.exception.ErrorCode;
 import notiboard.notice.dao.NoticeRepository;
 import notiboard.notice.domain.Attachment;
@@ -99,7 +99,7 @@ public class NoticeService {
     if (noticeRepository.existsByIdAndCreatedById(noticeId, policyChecker.getLoggedUserId())) {
       return;
     }
-    throw new CustomException(ErrorCode.FORBIDDEN_NOT_ALLOWED);
+    throw new NotiboardException(ErrorCode.FORBIDDEN_NOT_ALLOWED);
   }
 
   private List<Attachment> saveAttachments(Notice notice, List<MultipartFile> uploadFiles) {

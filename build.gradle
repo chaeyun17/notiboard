@@ -35,7 +35,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'org.jobrunr:jobrunr-spring-boot-starter:5.3.3'
 
     // Dev tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -88,4 +87,6 @@ configurations {
     }
     querydsl.extendsFrom compileClasspath
 }
-
+test {
+    useJUnitPlatform()
+}

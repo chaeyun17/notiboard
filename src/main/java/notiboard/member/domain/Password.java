@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -31,7 +31,7 @@ public class Password {
 
   private static void validate(String raw) {
     if (StringUtils.isBlank(raw) || raw.length() < MIN_LENGTH || raw.length() > MAX_LENGTH) {
-      throw new CustomException(INVALID_INPUT_PASSWORD_SIZE);
+      throw new NotiboardException(INVALID_INPUT_PASSWORD_SIZE);
     }
   }
 

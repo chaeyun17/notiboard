@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
-import notiboard.exception.CustomException;
+import notiboard.exception.NotiboardException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -65,8 +65,8 @@ public class CustomRestExceptionHandler {
     return ResponseEntity.status(httpStatus).body(response);
   }
 
-  @ExceptionHandler(CustomException.class)
-  public ResponseEntity<Object> customExceptionHandle(CustomException ex) {
+  @ExceptionHandler(NotiboardException.class)
+  public ResponseEntity<Object> customExceptionHandle(NotiboardException ex) {
     log.debug(ex.getMessage());
     CustomExceptionResponse response = new CustomExceptionResponse(ex);
     return ResponseEntity.status(ex.getHttpStatus()).body(response);
