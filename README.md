@@ -1,37 +1,85 @@
-## 기술 목록
+## 실행방법
 
-- Language: **Java 17**
-- Frameworks: **Spring Boot 3, Hibernate**
-- Build Tool: **Gradle 8**
-- DB: **MySQL, Redis**
-- Test Tools: **Rest assured, jUnit 5, AssertJ, TestContainers(MySQL)**
-- VCS: **Git, Github**
+### 실행 사전 준비
 
-## 실행 환경 구성
+- Docker Desktop
+- gradle 8
+- java 17
 
 ```shell
+$ brew install --cask docker
+
 # The Multiple Runtime Version Manager: ASDF
+# Java 와 Gradle을 ASDF 도구를 통해 설치합니다
 $ brew install asdf
 $ asdf plugin-add gradle https://github.com/rfrancis/asdf-gradle.git
 $ asdf plugin-add java https://github.com/halcyon/asdf-java.git
 $ asdf install
 ```
 
+### 서버 실행
+
 ```shell
-# 실행
-./gradlew bootRun
+$ ./gradlew bootRun
 ```
+
+### 테스트 실행
+
+```shell
+$ ./gradlew test
+```
+
+## 기술 목록
+
+- Language: **Java 17**
+- Frameworks: **Spring Boot 3, Hibernate**
+- Build Tool: **Gradle 8**
+- DB: **MySQL, Redis**
+- Test Tools: **Rest assured, JUnit 5, AssertJ, TestContainers(MySQL)**
+- VCS: **Git, Github**
 
 ## 코드 스타일 컨벤션
 
 - [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
 - `intellij-java-google-style.xml` Import
 
+## 설계
+
+### 대용량 트래픽 대응
+
+- 대용량 트래픽에 대비해 Scale Out 할 수 있도록 설계합니다.
+    - 첨부파일을 MinIO 오브젝트 스토리지에 저장하여 여러 인스턴스 서버에서도 파일 관리가 되도록 합니다.
+    - 인메모리 대신 Redis를 통해 메모리를 따로 확보하여 많은 캐시 데이터에도 서버 인스턴스 메모리가 부족하지 않도록 합니다.
+    - JWT 토큰 인증 방식을 통해 세션 관리 부하를 줄이고 부하를 분산하여 여러 인스턴스에서도 요청이 처리될 수 있도록 합니다.
+- 동시 요청이 많더라도 빠른 응답속도를 유지하기 위해 캐싱을 활용합니다.
+    - 게시물 목록 응답를 캐싱합니다.
+        - 캐시 TTL(Time-To-Live) 시간은 60초로 설정하여 조회수를 포함한 공지사항들이 최소 60초마다 캐시를 갱신되도록 합니다.
+        - 게시물 생성, 수정 시 목록 응답 캐시를 제거하여 업데이트된 결과가 반환될 수 있도록 합니다.
+    - 공지사항 상세 응답을 캐싱합니다.
+        - 게시물 생성 및 수정이 발생하면, 목록 응답 캐시를 제거하여 업데이트된 결과가 반환될 수 있도록 합니다.
+        - 조회수는 캐싱하지 않고 매번 조회하여 가져옵니다.
+- 조회수는 상세조회 시 올라가며 UPDATE 쿼리를 바로 실행하는 방식으로 조회수를 올리도록 합니다.
+    - 동시 조회 요청자가 많을 시, 조회수를 조회 후 업데이트 하는 방식으론 정확한 조회수로 업데이트가 되지 않는 문제를 예방합니다.
+- 페이지네이션 기능을 통해 일정 범위의 데이터만 가져갈 수 있도록하여 부하를 줄일 수 있는 선택지를 추가합니다.
+
+### 설계 다이어그램
+
+[![설계](https://mermaid.ink/img/pako:eNplkMFKw0AQhl9l2ZNC-wJBBEFQoQVtejLpYZts25Vkd9lslNIUqgcPNYdeKqIEeijqoR60VYr0iczkHdxS9eIchvl_5vsHpoc94VNs4VYgLrwOURpVai5HpryAUa6d4nKRZyvIFnC7LIbLBtopl3eTw3r9OEFEyq0DgaKOkJLx9vYGNK6zJ2XAPMK04Mim6pyqDYgSeHvOPwZFmkK2SpBonlFPO1XGjwSCu2m-TGGSmTsIhtPiepI_zuBp0PgL_gn5mr8bG65mxfilVNyn8DCCyTifLxLkN51q1z6p_GPgcwQ3rwlS1GeRU1v3Bi7hkKqQMN-8oLcmXKw7NKQutszo0xaJA-1il_fNKom1sLvcw5ZWMS3hWPpE031G2oqE2GqRIDKuJPxUiF_d_wY1q5SP?type=png)](https://mermaid.live/edit#pako:eNplkMFKw0AQhl9l2ZNC-wJBBEFQoQVtejLpYZts25Vkd9lslNIUqgcPNYdeKqIEeijqoR60VYr0iczkHdxS9eIchvl_5vsHpoc94VNs4VYgLrwOURpVai5HpryAUa6d4nKRZyvIFnC7LIbLBtopl3eTw3r9OEFEyq0DgaKOkJLx9vYGNK6zJ2XAPMK04Mim6pyqDYgSeHvOPwZFmkK2SpBonlFPO1XGjwSCu2m-TGGSmTsIhtPiepI_zuBp0PgL_gn5mr8bG65mxfilVNyn8DCCyTifLxLkN51q1z6p_GPgcwQ3rwlS1GeRU1v3Bi7hkKqQMN-8oLcmXKw7NKQutszo0xaJA-1il_fNKom1sLvcw5ZWMS3hWPpE031G2oqE2GqRIDKuJPxUiF_d_wY1q5SP)
+
+#### ERD
+
+![erd.png](docs/erd.png)
+
+### 의존성
+
+![dependency.png](docs/dependency.png)
+
+
 --- 
 
 ## 기능 상세 정의
 
-- 공지사항을 등록할 수 있어야 한다.
+- 공지사항을 등록
     - 요청
         - 제목, 내용, 공지 시작일시, 공지 종료일시, 첨부파일 (여러개)
     - 유효성 체크
@@ -82,13 +130,14 @@ $ asdf install
 - 공지사항 목록 조회
     - 요청
         - 파라미터: 페이지 순번, 페이지네이션 숫자
-        - 정렬: 제목, 내용, 공지시작일시, 공지 종료일시 오름차순과 내림차순
-        - 검색: 제목 또는 내용 포함 검색, 기간 검색
+        - 정렬: 제목, 내용, 등록일시
     - 권한 체크
-        - 비로그인 회원 가능
+        - 비로그인 가능
     - 응답
-        - 제목, 내용, 공지 시작일시, 공지 종료일시, 첨부파일 다운로드 링크들
-- 응답
+        - 제목, 내용, 등록일시, 조회수, 작성자
+    - 특징
+        - 시작일시와 종료일시에 해당하는 공지사항만 조회됩니다. 시작전이거나 종료 후 공지사항은 조회되지 않습니다.
+- 공통 응답
     - 유효성 체크 실패 `400 Bad Request`
     - 존재 하지 않는 리소스에 대한 응답 `404 Not Found`
     - 서버 에러 `500 Internal Server`
@@ -122,8 +171,6 @@ $ asdf install
 - 내용 Content
     - 생성
     - 수정
-    - 유효성 체크
-        - 1자~1000자
 - Attachment 첨부파일
     - 첨부파일 생성
     - 첨부파일 삭제
