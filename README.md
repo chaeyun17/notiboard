@@ -47,7 +47,7 @@ $ ./gradlew test
 
 ## 개발환경 세팅
 
-```mermaid
+```
 # The Multiple Runtime Version Manager: ASDF
 # Java 와 Gradle을 ASDF 도구를 통해 설치합니다. .tool-version 파일을 읽어서 세팅됩니다.
 $ brew install asdf
